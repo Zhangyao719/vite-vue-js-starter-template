@@ -4,17 +4,33 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": false,
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "jsx": "preserve",
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*", "./mock/*"]
+      "@/*": [
+        "./src/*",
+        "./mock/*"
+      ]
     },
-    "types": ["element-plus/global"]
+    "types": [
+      "tdesign-vue-next/global"
+    ]
   },
-  "include": ["mock/*.js", "src/**/*.js", "src/**/*.vue", "vite.config.js"],
-  "exclude": ["dist", "node_modules"]
+  "include": [
+    "mock/*.js",
+    "src/**/*.js",
+    "src/**/*.vue",
+    "vite.config.js"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
 }

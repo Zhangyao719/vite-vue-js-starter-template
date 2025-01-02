@@ -18,9 +18,21 @@ Object.keys(files).forEach((key) => {
 const asyncRouterList = [...routeModuleList];
 
 // 存放固定路由
-const defaultRouterList = [];
+const defaultRouterList = [
+  {
+    path: '/',
+    redirect: '/screen/index',
+  },
+];
 
-const routes = [...defaultRouterList, ...asyncRouterList];
+const routes = [
+  ...defaultRouterList,
+  ...asyncRouterList,
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: { name: 'ScreenWelcome' },
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
