@@ -10,4 +10,6 @@ import '@/style/index.less';
 // 引入组件库全局样式资源
 import 'tdesign-vue-next/es/style/index.css';
 
+import 'uno.css';
+
 createApp(App).use(router).use(store).mount('#app');

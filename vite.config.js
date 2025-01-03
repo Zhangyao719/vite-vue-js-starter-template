@@ -6,6 +6,7 @@ import IconsResolver from 'unplugin-icons/resolver';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { TDesignResolver } from 'unplugin-vue-components/resolvers';
+import UnoCss from 'unocss/vite';
 
 export default ({ mode }) => {
   const { VITE_PORT, VITE_BASE_URL } = loadEnv(mode, process.cwd());
@@ -42,6 +43,10 @@ export default ({ mode }) => {
       Icons({
         autoInstall: true,
       }),
+
+      // https://github.com/unocss/unocss
+      // see unocss.config.ts for config
+      UnoCss(),
     ],
     resolve: {
       alias: {
