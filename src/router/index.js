@@ -24,6 +24,10 @@ const asyncRouterList = [...routeModuleList];
 // 存放固定路由
 const defaultRouterList = [
   {
+    path: '/',
+    redirect: '/user/authorize',
+  },
+  {
     path: '/404',
     name: 'NotFound',
     component: () => import('@/views/error/404.vue'),

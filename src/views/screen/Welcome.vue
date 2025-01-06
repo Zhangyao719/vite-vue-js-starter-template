@@ -1,5 +1,7 @@
 <template>
-  <div>活动主页</div>
+  <div class="text-center" style="width: 200px; background-color: #fff">
+    <h1>欢迎来到大屏展示</h1>
+  </div>
 </template>
 
 <script setup lang="ts">
