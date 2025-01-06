@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { getTokens, clearUserInfo } from '@/utils/authorize';
 
 const files = import.meta.glob('./modules/*.js', {
   eager: true,
@@ -14,14 +15,18 @@ Object.keys(files).forEach((key) => {
   routeModuleList.push(...moduleList);
 });
 
+// 路由白名单
+// const whiteList = ['/screen/welcome', '/screen/lottery', '/user/authorize', '/404'];
+
 // 存放动态路由
 const asyncRouterList = [...routeModuleList];
 
 // 存放固定路由
 const defaultRouterList = [
   {
-    path: '/',
-    redirect: '/screen/index',
+    path: '/404',
+    name: 'NotFound',
+    component: () => import('@/views/error/404.vue'),
   },
 ];
 
@@ -30,7 +35,7 @@ const routes = [
   ...asyncRouterList,
   {
     path: '/:pathMatch(.*)*',
-    redirect: { name: 'ScreenWelcome' },
+    redirect: { name: 'NotFound' },
   },
 ];
 
@@ -44,6 +49,17 @@ const router = createRouter({
       behavior: 'smooth',
     };
   },
+});
+
+router.beforeEach((to) => {
+  const { accessToken } = getTokens();
+  return accessToken && to.name === 'Authorize' ? { name: 'SignIn' } : true;
+});
+
+router.afterEach((to) => {
+  if (to.meta?.title && document) {
+    document.title = to.meta.title;
+  }
 });
 
 export default router;

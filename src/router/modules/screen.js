@@ -2,6 +2,7 @@ export default [
   {
     path: '/screen',
     name: 'ScreenBackground',
+    redirect: '/screen/welcome',
     component: () => import('@/views/screen/Background.vue'),
     children: [
       {
