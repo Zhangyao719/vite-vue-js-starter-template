@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { getTokens, clearUserInfo } from '@/utils/authorize';
+import { getTokens } from '@/utils/authorize';
+// import { useDictStoreWithOut } from '@/store/modules/dict';
 
 const files = import.meta.glob('./modules/*.js', {
   eager: true,
@@ -55,7 +56,12 @@ const router = createRouter({
   },
 });
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
+  // 提前准备数据（目前先写死）
+  // const dictStore = useDictStoreWithOut();
+  // if (!dictStore.getIsSetDict) await dictStore.setDictMap();
+
+  // 目前所有页面都能进（除了已经登录的，不需要再进入授权页）
   const { accessToken } = getTokens();
   return accessToken && to.name === 'Authorize' ? { name: 'SignIn' } : true;
 });
