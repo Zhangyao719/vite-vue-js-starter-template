@@ -35,7 +35,7 @@
     "mitt": "^3.0.1",
     "pinia": "^2.1.7",
     "tdesign-vue-next": "^1.7.0",
-    "vue": "^3.3.9",
+    "vue": "^3.5.2",
     "vue-router": "^4.2.5",
     "web-storage-cache": "^1.1.1"
   },

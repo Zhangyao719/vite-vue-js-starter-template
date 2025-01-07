@@ -36,7 +36,7 @@ import { signIn } from '@/services/user';
 import useCache from '@/utils/storage';
 
 defineOptions({
-  name: 'SignIn',
+  name: 'SignIn', // 签到即登录
 });
 
 const route = useRoute();
