@@ -1,8 +1,6 @@
 <template>
   <div id="user-wrapper" class="w-full h-full relative">
-    <t-loading :loading="loading" attach="#user-wrapper" size="1.5rem" style="
-
---td-brand-color: #fedc83" />
+    <t-loading :loading="loading" attach="#user-wrapper" size="1.5rem" style="--td-brand-color: #fedc83" />
     <!-- 用户信息 -->
     <div class="w-full h-1/2 flex-center flex-col">
       <t-avatar image="https://tdesign.gtimg.com/site/avatar.jpg" size="3.5rem" />
@@ -35,7 +33,7 @@ import { useRoute } from 'vue-router';
 import { DialogPlugin } from 'tdesign-vue-next';
 import { authorize, handleUnlogin } from '@/utils/authorize';
 import { signIn } from '@/services/user';
-import wsCache from '@/utils/storage';
+import useCache from '@/utils/storage';
 
 defineOptions({
   name: 'SignIn',
@@ -43,7 +41,9 @@ defineOptions({
 
 const route = useRoute();
 
-const userInfo = reactive(wsCache.get('userInfo') || {});
+const { wsCache, CACHE_KEY } = useCache();
+
+const userInfo = reactive(wsCache.get(CACHE_KEY.USER) || {});
 const isLogin = computed(() => !!userInfo.accessToken);
 
 //#region 操作栏
@@ -54,7 +54,7 @@ const handleCommand = async (/* command */) => {
   loading.value = true;
   try {
     const info = await signIn(wxCode.value, 1);
-    wsCache.set('userInfo', info);
+    wsCache.set(CACHE_KEY.USER, info);
     Object.assign(userInfo, info);
   } catch (err) {
     DialogPlugin.alert({
@@ -103,8 +103,4 @@ onBeforeMount(() => {
   background-image: url('../../../src/assets/imgs/bgi.png');
   background-size: cover;
 }
-
-// :global(#user-wrapper .t-radio-button__label) {
-//   color: red;
-// }
 </style>

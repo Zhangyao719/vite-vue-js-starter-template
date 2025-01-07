@@ -1,5 +1,16 @@
 import WebStorageCache from 'web-storage-cache';
 
-const wsCache = new WebStorageCache();
+const CACHE_KEY = {
+  USER: 'userInfo',
+  DICT_CACHE: 'dictCache',
+};
 
-export default wsCache;
+const useCache = (type = 'localStorage') => {
+  const wsCache = new WebStorageCache({ storage: type });
+  return {
+    wsCache,
+    CACHE_KEY,
+  };
+};
+
+export default useCache;

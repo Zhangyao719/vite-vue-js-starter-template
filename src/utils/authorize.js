@@ -1,5 +1,7 @@
 import { APP_INFO } from '@/utils/constant';
-import wsCache from '@/utils/storage';
+import useCache from '@/utils/storage';
+
+const { wsCache, CACHE_KEY } = useCache();
 
 /** @description 微信网页授权 */
 export const authorize = () => {
@@ -16,7 +18,7 @@ export const authorize = () => {
 /** @description 获取 token */
 export const getTokens = () => {
   const tokens = { accessToken: '', refreshToken: '' };
-  const userInfo = wsCache.get('userInfo');
+  const userInfo = wsCache.get(CACHE_KEY.USER);
   if (userInfo) {
     tokens.accessToken = userInfo.accessToken || '';
     tokens.refreshToken = userInfo.refreshToken || '';
@@ -26,7 +28,7 @@ export const getTokens = () => {
 
 /** @description 清空用户信息 */
 export const clearUserInfo = () => {
-  wsCache.delete('userInfo');
+  wsCache.delete(CACHE_KEY.USER);
 };
 
 /** @description 登录鉴权 */
