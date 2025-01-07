@@ -9,3 +9,18 @@ export const PrizeOptions = [
 export const getPrizeInfo = (value) => {
   return PrizeOptions.find((item) => item.value === value) ?? {};
 };
+
+export const LotteryConfig = {
+  Start: {
+    component: 'Start',
+    label: '开始',
+  },
+  Loading: {
+    component: 'Loading',
+    label: '停止',
+  },
+  Result: {
+    component: 'Result',
+    label: '返回',
+  },
+};

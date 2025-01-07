@@ -36,7 +36,7 @@
       :footer="false"
       size="100px"
     >
-      <t-button class="mr-4!" @click="router.go(-1)">上一页</t-button>
+      <t-button class="mr-4!" @click="router.push({ name: 'ScreenWelcome' })">首页</t-button>
       <t-button class="mr-4!" @click="router.push({ name: 'Lottery' })">大屏抽奖</t-button>
       <t-select v-model="prizeType" class="inline-block w-120px!" placeholder="-选择奖项-" @change="onPrizeChange">
         <t-option v-for="p in PrizeOptions" :key="p.value" :value="p.value" :label="p.label" />
