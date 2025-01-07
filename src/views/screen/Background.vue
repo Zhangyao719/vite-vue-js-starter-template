@@ -36,14 +36,10 @@
       :footer="false"
       size="100px"
     >
-      <t-button>大屏抽奖</t-button>
-      <t-button>上一页</t-button>
-      <t-select>
-        <t-option label="纪念奖" />
-        <t-option label="三等奖" />
-        <t-option label="二等奖" />
-        <t-option label="一等奖" />
-        <t-option label="特等奖" />
+      <t-button class="mr-4!" @click="router.go(-1)">上一页</t-button>
+      <t-button class="mr-4!" @click="router.push({ name: 'Lottery' })">大屏抽奖</t-button>
+      <t-select v-model="prizeType" class="inline-block w-120px!" placeholder="-选择奖项-" @change="onPrizeChange">
+        <t-option v-for="p in PrizeOptions" :key="p.value" :value="p.value" :label="p.label" />
       </t-select>
     </t-drawer>
 
@@ -56,11 +52,12 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
+<script setup>
+import { ref, provide, readonly } from 'vue';
 import { useRouter } from 'vue-router';
 import { IconFont } from 'tdesign-icons-vue-next';
 import useMusic from '@/hooks/useMusic';
+import { PrizeOptions, getPrizeInfo } from './constant';
 
 defineOptions({
   name: 'ScreenBackground',
@@ -70,9 +67,16 @@ const router = useRouter();
 
 const { musicRef, classMusic, toggleMusic } = useMusic();
 
-// 工具栏
+// #region 工具栏
 const show = ref(false);
 const prizeType = ref();
+const prizeInfo = ref({});
+const onPrizeChange = (value) => {
+  prizeInfo.value = getPrizeInfo(value);
+};
+// 将当前奖项信息传递给子组件
+provide('prizeInfo', readonly(prizeInfo));
+// #endregion
 </script>
 
 <style scoped lang="less">
@@ -90,6 +94,7 @@ const prizeType = ref();
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(1turn);
   }
@@ -97,10 +102,10 @@ const prizeType = ref();
 
 .lottery-music {
   position: absolute;
-  left: 2.5%;
   top: 6.5%;
-  cursor: pointer;
+  left: 2.5%;
   z-index: 1;
+  cursor: pointer;
 
   &.stoped {
     .music-btn {
@@ -110,16 +115,16 @@ const prizeType = ref();
 
   .music-btn {
     background: url('../../assets/imgs/music-btn.png') no-repeat center;
-    background-blend-mode: lighten;
     background-size: contain;
+    background-blend-mode: lighten;
     animation: rotateMusic 1.2s linear infinite;
   }
 }
 
 .action-btn {
   position: absolute;
-  left: 2.5%;
   top: 15%;
+  left: 2.5%;
   border: 2px solid #fff176;
 
   &:hover {
@@ -130,9 +135,11 @@ const prizeType = ref();
 :global(.setting-drawer .t-drawer__mask) {
   background-color: transparent;
 }
+
 :global(.setting-drawer .t-drawer__content-wrapper) {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgb(0 0 0 / 40%);
 }
+
 :global(body) {
   width: 100% !important;
 }

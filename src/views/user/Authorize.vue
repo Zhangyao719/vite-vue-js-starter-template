@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { IconFont } from 'tdesign-icons-vue-next';
 import { authorize } from '@/utils/authorize';
 
