@@ -11,11 +11,8 @@
     <!-- 音频 -->
     <div :class="classMusic" @click="toggleMusic">
       <div class="music-btn w-48px h-48px" />
-      <audio ref="musicRef" loop preload="auto">
-        <source
-          src="https://pic.snsboat.com/saas/normal/customer/undefined/undefined/A76QZ8LWcsYNLHkvZ56QZ8lw/2023/2/17/9ed42a6bcfc3f2a18b618b580ce94092.mp3"
-          type="audio/mp3"
-        />
+      <audio ref="musicRef" preload="metadata" :loop="musicConfig.loop">
+        <source :src="musicConfig.src" type="audio/mp3" />
       </audio>
     </div>
 
@@ -36,8 +33,8 @@
       :footer="false"
       size="100px"
     >
-      <t-button class="mr-4!" @click="router.push({ name: 'ScreenWelcome' })">首页</t-button>
-      <t-button class="mr-4!" @click="router.push({ name: 'Lottery' })">大屏抽奖</t-button>
+      <t-button class="mr-4!" @click="backHome">首页</t-button>
+      <t-button class="mr-4!" @click="router.push({ name: 'Lottery' })"> 大屏抽奖 </t-button>
       <t-select v-model="prizeType" class="inline-block w-120px!" placeholder="-选择奖项-" @change="onPrizeChange">
         <t-option v-for="p in PrizeOptions" :key="p.value" :value="p.value" :label="p.label" />
       </t-select>
@@ -53,11 +50,11 @@
 </template>
 
 <script setup>
-import { ref, provide, readonly } from 'vue';
+import { ref, provide, readonly, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { IconFont } from 'tdesign-icons-vue-next';
 import useMusic from '@/hooks/useMusic';
-import { PrizeOptions, getPrizeInfo } from './constant';
+import { PrizeOptions, getPrizeInfo, MusicConfig } from './constant';
 
 defineOptions({
   name: 'ScreenBackground',
@@ -65,7 +62,21 @@ defineOptions({
 
 const router = useRouter();
 
-const { musicRef, classMusic, toggleMusic } = useMusic();
+// #region 音频（背景音乐、抽奖音乐等）
+const { musicRef, musicState, classMusic, musicConfig, selectMusic, toggleMusic } = useMusic();
+watch(
+  () => musicConfig.value.src,
+  (newSrc, oldSrc) => {
+    // 重新加载音频
+    if (musicRef.value && newSrc && newSrc !== oldSrc) {
+      musicRef.value.pause();
+      musicRef.value.load();
+      // 如果当前是播放状态，则继续播放
+      if (musicState.value) musicRef.value.play();
+    }
+  },
+);
+// #endregion
 
 // #region 工具栏
 const show = ref(false);
@@ -74,8 +85,14 @@ const prizeInfo = ref({});
 const onPrizeChange = (value) => {
   prizeInfo.value = getPrizeInfo(value);
 };
-// 将当前奖项信息传递给子组件
+// 将当前奖项信息注入给子组件
 provide('prizeInfo', readonly(prizeInfo));
+
+// 返回首页
+const backHome = () => {
+  selectMusic(MusicConfig.Bgm);
+  router.push({ name: 'ScreenWelcome' });
+};
 // #endregion
 </script>
 

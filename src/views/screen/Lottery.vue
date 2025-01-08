@@ -29,7 +29,8 @@ import { ref, inject, computed } from 'vue';
 import Start from './components/LotteryStart.vue';
 import Loading from './components/LotteryLoading.vue';
 import Result from './components/LotteryResult.vue';
-import { LotteryConfig } from './constant';
+import { LotteryConfig, MusicConfig } from './constant';
+import useMusic from '@/hooks/useMusic';
 
 defineOptions({
   name: 'Lottery',
@@ -40,29 +41,40 @@ defineOptions({
   },
 });
 
-const prizeInfo = inject('prizeInfo');
+const { selectMusic } = useMusic();
 
+const prizeInfo = inject('prizeInfo');
 const disabled = computed(() => !prizeInfo.value?.value);
 
+// 当前的抽奖环节
 const activeTab = ref(LotteryConfig.Start);
-
 const handleClick = (tab) => {
   switch (tab) {
     case LotteryConfig.Start.component:
+      // 1. 开始抽奖 → 抽奖中
       // todo: 发送抽奖请求
       console.log(prizeInfo.value);
       activeTab.value = LotteryConfig.Loading;
+      selectMusic(MusicConfig.Loading);
       break;
     case LotteryConfig.Loading.component:
+      // 2. 抽奖中 → 抽奖结果
       activeTab.value = LotteryConfig.Result;
+      selectMusic(MusicConfig.Result);
       break;
     case LotteryConfig.Result.component:
+      //  3. 抽奖结果 → 返回开始抽奖
       activeTab.value = LotteryConfig.Start;
+      selectMusic(MusicConfig.Start);
       break;
     default:
       break;
   }
 };
+
+onMounted(() => {
+  selectMusic(MusicConfig.Start);
+});
 </script>
 
 <style scoped lang="less">
