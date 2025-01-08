@@ -19,6 +19,6 @@ defineOptions({
 
 <style scoped>
 .prize-image {
-  background-image: url("https://pic.snsboat.com/saas/normal/customer/61/15607/X77bXJ5EY6QZ8Pis5R5kQ/2024/4/16/37c1e06bced64c02de8c77a6cdd50308.png");
+  background-image: url('https://pic.snsboat.com/saas/normal/customer/61/15607/X77bXJ5EY6QZ8Pis5R5kQ/2024/4/16/37c1e06bced64c02de8c77a6cdd50308.png');
 }
 </style>

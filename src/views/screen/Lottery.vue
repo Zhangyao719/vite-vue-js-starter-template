@@ -13,7 +13,9 @@
 
     <!-- 操作按钮 -->
     <t-button
-      class="operation w-200px"
+      block
+      class="operation w-200px!"
+      style="margin: 0 auto"
       shape="round"
       size="large"
       :disabled="disabled"

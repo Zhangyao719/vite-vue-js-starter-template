@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-wrapper h-100vh min-h-2xl overflow-hidden relative pt-7%">
+  <div class="screen-background h-100vh min-h-2xl overflow-hidden relative pt-7%">
     <!-- 视频背景 -->
     <video class="absolute inset-0 w-full h-full object-fill" autoplay loop muted>
       <source
@@ -35,7 +35,7 @@
     >
       <t-button class="mr-4!" @click="backHome">首页</t-button>
       <t-button class="mr-4!" @click="router.push({ name: 'Lottery' })"> 大屏抽奖 </t-button>
-      <t-select v-model="prizeType" class="inline-block w-120px!" placeholder="-选择奖项-" @change="onPrizeChange">
+      <t-select v-model="prizeType" class="inline-block w-150px!" placeholder="-选择奖项-" @change="onPrizeChange">
         <t-option v-for="p in PrizeOptions" :key="p.value" :value="p.value" :label="p.label" />
       </t-select>
     </t-drawer>
@@ -97,6 +97,8 @@ const backHome = () => {
 </script>
 
 <style scoped lang="less">
+@import '@/style/mixin.less';
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;
@@ -105,16 +107,6 @@ const backHome = () => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
-
-@keyframes rotateMusic {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(1turn);
-  }
 }
 
 .lottery-music {
@@ -134,7 +126,7 @@ const backHome = () => {
     background: url('../../assets/imgs/music-btn.png') no-repeat center;
     background-size: contain;
     background-blend-mode: lighten;
-    animation: rotateMusic 1.2s linear infinite;
+    animation: rotate 1.2s linear infinite;
   }
 }
 

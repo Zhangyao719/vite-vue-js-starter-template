@@ -1,9 +1,14 @@
 export const PrizeOptions = [
-  { label: '纪 念 奖', value: 1, indoorNum: 80, outdoorNum: 80 },
-  { label: '三 等 奖', value: 2, indoorNum: 30, outdoorNum: 90 },
-  { label: '二 等 奖', value: 3, indoorNum: 8, outdoorNum: 28 },
-  { label: '一 等 奖', value: 4, indoorNum: 2, outdoorNum: 4 },
-  { label: '特 等 奖', value: 5, indoorNum: 1, outdoorNum: 1 },
+  { label: '纪 念 奖（场内）', value: 'souvenirIndoor', num: 80 },
+  { label: '纪 念 奖（场外）', value: 'souvenirOutdoor', num: 80 },
+  { label: '三 等 奖（场内）', value: 'thirdIndoor', num: 30 },
+  { label: '三 等 奖（场外）', value: 'thirdOutdoor', num: 90 },
+  { label: '二 等 奖（场内）', value: 'secondIndoor', num: 8 },
+  { label: '二 等 奖（场外）', value: 'secondOutdoor', num: 28 },
+  { label: '一 等 奖（场内）', value: 'firstIndoor', num: 2 },
+  { label: '一 等 奖（场外）', value: 'firstOudoor', num: 4 },
+  { label: '特 等 奖（场内）', value: 'outstandIndoor', num: 1 },
+  { label: '特 等 奖（场外）', value: 'outstandOutdoor', num: 1 },
 ];
 
 export const getPrizeInfo = (value) => {
