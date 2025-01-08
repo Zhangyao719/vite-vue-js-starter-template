@@ -10,8 +10,6 @@
 </template>
 
 <script setup>
-import {} from 'vue';
-
 defineOptions({
   name: 'LotteryStart',
 });

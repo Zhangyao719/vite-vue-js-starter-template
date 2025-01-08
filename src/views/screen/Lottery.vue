@@ -13,6 +13,7 @@
 
     <!-- 操作按钮 -->
     <t-button
+      :loading="loading"
       block
       class="operation w-200px!"
       style="margin: 0 auto"
@@ -33,6 +34,8 @@ import Loading from './components/LotteryLoading.vue';
 import Result from './components/LotteryResult.vue';
 import { LotteryConfig, MusicConfig } from './constant';
 import useMusic from '@/hooks/useMusic';
+import { useUserStore } from '@/store/modules/user.js';
+import { lottery } from '@/api/lottery';
 
 defineOptions({
   name: 'Lottery',
@@ -49,20 +52,33 @@ const prizeInfo = inject('prizeInfo');
 const disabled = computed(() => !prizeInfo.value?.value || !prizeInfo.value?.num);
 
 // 当前的抽奖环节
+const userStore = useUserStore();
 const activeTab = ref(LotteryConfig.Start);
-const handleClick = (tab) => {
+const loading = ref(false);
+const handleClick = async (tab) => {
   switch (tab) {
     case LotteryConfig.Start.component:
       // 1. 开始抽奖 → 抽奖中
-      // todo: 发送抽奖请求
-      console.log(prizeInfo.value);
-      activeTab.value = LotteryConfig.Loading;
-      selectMusic(MusicConfig.Loading);
+      loading.value = true;
+      try {
+        await userStore.fetchAllSignInUser();
+        activeTab.value = LotteryConfig.Loading;
+        selectMusic(MusicConfig.Loading);
+      } finally {
+        loading.value = false;
+      }
       break;
     case LotteryConfig.Loading.component:
       // 2. 抽奖中 → 抽奖结果
-      activeTab.value = LotteryConfig.Result;
-      selectMusic(MusicConfig.Result);
+      try {
+        // todo: 调用抽奖接口
+        console.log(prizeInfo.value);
+        await lottery();
+        activeTab.value = LotteryConfig.Result;
+        selectMusic(MusicConfig.Result);
+      } finally {
+        loading.value = false;
+      }
       break;
     case LotteryConfig.Result.component:
       //  3. 抽奖结果 → 返回开始抽奖

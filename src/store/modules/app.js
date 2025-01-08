@@ -16,6 +16,6 @@ export const useAppStore = defineStore('app', {
   },
 });
 
-export const useDictStoreWithOut = () => {
-  return useDictStore(store);
+export const useAppStoreWithOut = () => {
+  return useAppStore(store);
 };

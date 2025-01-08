@@ -4,13 +4,7 @@
     <!-- 过渡效果，固定 30 个位置 -->
     <li v-for="user in pool" :key="user.id" class="inline-flex flex-col justify-center items-center">
       <div class="avatar w-112px h-112px relative">
-        <img
-          class="rounded-50% absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-          width="90%"
-          height="90%"
-          :src="user.avatar"
-          alt=""
-        />
+        <img class="absolute-center object-fill w-90% h-90% rounded-50%" :src="user.headimgurl" alt="" />
       </div>
       <span class="text-#fff176 text-sm">{{ user.nickname }}</span>
     </li>
@@ -18,21 +12,29 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { onBeforeMount, onBeforeUnmount } from 'vue';
+import { useUserStore } from '@/store/modules/user.js';
 
 defineOptions({
   name: 'LotteryLoading',
 });
 
-const prizeInfo = inject('prizeInfo');
-
-const pool = ref(
-  Array.from({ length: 30 }, (_, index) => ({
-    id: index,
-    nickname: '阿斯蒂芬拿到',
-    avatar: 'https://tdesign.gtimg.com/site/avatar.jpg',
-  })),
-);
+//#region 抽奖池
+const userStore = useUserStore();
+const pool = ref([]);
+const setPool = () => {
+  pool.value = userStore.getRandomUsers();
+};
+const timer = ref(null);
+onBeforeMount(() => {
+  timer.value = setInterval(() => {
+    setPool();
+  }, 200);
+});
+onBeforeUnmount(() => {
+  if (timer.value) clearInterval(timer.value);
+});
+//#endregion
 </script>
 
 <style scoped lang="less">

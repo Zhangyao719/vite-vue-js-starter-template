@@ -2,12 +2,12 @@
   <!-- 烟花特效 -->
   <div class="fixed top-0 flex justify-between">
     <img
-      width="30%"
+      class="w-30%"
       src="https://pic.snsboat.com/saas/normal/customer/61/15607/X77bXJ5EY6QZ8Pis5R5kQ/2024/4/16/4fa93a852d6171ddf5775875e00fb07d.gif"
       alt=""
     />
     <img
-      width="30%"
+      class="w-30%"
       src="https://pic.snsboat.com/saas/normal/customer/61/15607/X77bXJ5EY6QZ8Pis5R5kQ/2024/4/16/4fa93a852d6171ddf5775875e00fb07d.gif"
       alt=""
     />

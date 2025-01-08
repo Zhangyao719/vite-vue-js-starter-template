@@ -1,7 +1,7 @@
 <template>
   <section class="h-full text-center relative">
     <img
-      width="20%"
+      class="w-20%"
       src="https://pic.snsboat.com/saas/normal/customer/61/83/A76QZ8LWcsYNLHkvZ56QZ8lw/2024/11/14/e0a3cb444e06ef6fe41a263828e11808.png"
       alt=""
     />
@@ -20,14 +20,14 @@
 
     <div class="left-icon absolute left-5% bottom-8% w-20%">
       <img
-        width="100%"
+        class="w-full"
         src="https://pic.snsboat.com/saas/normal/customer/61/83/A76QZ8LWcsYNLHkvZ56QZ8lw/2024/11/14/99fff346dd21db2e3d92cff5d22ea0d2.png"
         alt=""
       />
     </div>
     <div class="right-icon absolute right-5% bottom-8% w-20%">
       <img
-        width="100%"
+        class="w-full"
         src="https://pic.snsboat.com/saas/normal/customer/61/83/A76QZ8LWcsYNLHkvZ56QZ8lw/2024/11/14/abc77358c23da0516f84bb74fb1a7532.png"
         alt=""
       />
@@ -43,12 +43,7 @@ defineOptions({
 
 <style scoped>
 .text {
-  background-image: linear-gradient(
-    -180deg,
-    rgb(255 241 167) 26.82%,
-    rgb(255 236 83) 63.18%,
-    rgb(231 105 26) 85.91%
-  );
+  background-image: linear-gradient(-180deg, rgb(255 241 167) 26.82%, rgb(255 236 83) 63.18%, rgb(231 105 26) 85.91%);
   writing-mode: horizontal-tb;
   text-orientation: upright;
 }

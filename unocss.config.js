@@ -27,6 +27,7 @@ export default defineConfig({
     ['flex-between', 'flex items-center justify-between'],
     ['flex-end', 'flex items-end justify-between'],
     ['mx-center', 'my-0 mx-auto'],
+    ['absolute-center', 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'],
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
 });
