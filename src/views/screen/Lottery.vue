@@ -46,7 +46,7 @@ defineOptions({
 const { selectMusic } = useMusic();
 
 const prizeInfo = inject('prizeInfo');
-const disabled = computed(() => !prizeInfo.value?.value);
+const disabled = computed(() => !prizeInfo.value?.value || !prizeInfo.value?.num);
 
 // 当前的抽奖环节
 const activeTab = ref(LotteryConfig.Start);

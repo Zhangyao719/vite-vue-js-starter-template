@@ -35,9 +35,24 @@
     >
       <t-button class="mr-4!" @click="backHome">首页</t-button>
       <t-button class="mr-4!" @click="router.push({ name: 'Lottery' })"> 大屏抽奖 </t-button>
-      <t-select v-model="prizeType" class="inline-block w-150px!" placeholder="-选择奖项-" @change="onPrizeChange">
+      <t-select
+        v-model="prizeType"
+        class="inline-block w-150px! mr-4!"
+        placeholder="-选择奖项-"
+        @change="onPrizeChange"
+      >
         <t-option v-for="p in PrizeOptions" :key="p.value" :value="p.value" :label="p.label" />
       </t-select>
+      <t-input-number
+        v-model="prizeNum"
+        class="align-middle w-150px!"
+        theme="column"
+        align="center"
+        :max="100"
+        :min="1"
+        label="人数"
+        @change="onNumchange"
+      />
     </t-drawer>
 
     <!-- 子路由 -->
@@ -83,7 +98,11 @@ const show = ref(false);
 const prizeType = ref();
 const prizeInfo = ref({});
 const onPrizeChange = (value) => {
-  prizeInfo.value = getPrizeInfo(value);
+  Object.assign(prizeInfo.value, getPrizeInfo(value));
+};
+const prizeNum = ref();
+const onNumchange = (num) => {
+  Object.assign(prizeInfo.value, { num });
 };
 // 将当前奖项信息注入给子组件
 provide('prizeInfo', readonly(prizeInfo));
