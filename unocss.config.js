@@ -11,9 +11,6 @@ import presetChinese from 'unocss-preset-chinese';
 import presetEase from 'unocss-preset-ease';
 
 export default defineConfig({
-  // theme: {
-  //   ...antdUnoTheme,
-  // },
   presets: [
     presetUno(),
     presetAttributify(),
@@ -29,6 +26,7 @@ export default defineConfig({
     ['flex-center', 'flex items-center justify-center'],
     ['flex-between', 'flex items-center justify-between'],
     ['flex-end', 'flex items-end justify-between'],
+    ['mx-center', 'my-0 mx-auto'],
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
 });

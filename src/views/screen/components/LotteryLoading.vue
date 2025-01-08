@@ -41,7 +41,7 @@ const pool = ref(
 }
 
 .avatar {
-  background-image: url(https://pic.snsboat.com/saas/normal/customer/61/15607/X77bXJ5EY6QZ8Pis5R5kQ/2024/4/16/55fefd5d1efca0f25371cbe0f91886ec.png?v=51&imageMogr2/auto-orient/ignore-error/1);
+  background-image: url('https://pic.snsboat.com/saas/normal/customer/61/15607/X77bXJ5EY6QZ8Pis5R5kQ/2024/4/16/55fefd5d1efca0f25371cbe0f91886ec.png?v=51&imageMogr2/auto-orient/ignore-error/1');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

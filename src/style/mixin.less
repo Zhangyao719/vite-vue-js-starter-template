@@ -19,6 +19,24 @@
   -webkit-box-orient: vertical;
 }
 
+// 滚动条
+.scrollbar {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #dcdcdc;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  }
+}
+
 // 旋转动画
 @keyframes rotate {
   from {

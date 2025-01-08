@@ -97,7 +97,7 @@ const backHome = () => {
 </script>
 
 <style scoped lang="less">
-@import '@/style/mixin.less';
+@import url('@/style/mixin.less');
 
 .fade-enter-active,
 .fade-leave-active {

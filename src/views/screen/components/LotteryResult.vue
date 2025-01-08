@@ -14,26 +14,22 @@
   </div>
 
   <!-- 中奖名单 -->
-  <div class="zoom-in-down min-h-500px px-5% mb-30px bg-slate-100/[0.5]">
+  <div class="zoom-in-down min-h-400px max-h-75% px-5% mb-30px overflow-y-auto scrollbar">
     <ul class="flex flex-wrap justify-center">
-      <li v-for="user in pool" :key="user.id" class="flex-shrink-0 flex-basis-160px">
-        <!-- 头像框 -->
-        <img
-          class="avatar-rotate"
-          src="https://pic.snsboat.com/saas/normal/customer/61/15607/X77bXJ5EY6QZ8Pis5R5kQ/2024/4/16/55fefd5d1efca0f25371cbe0f91886ec.png?v=51&imageMogr2/0/w/3000"
-          alt=""
-        />
-        <!-- class="flex-1 w-full min-w-120px h-150px flex-center flex-col bg-blue-100/[0.5]" -->
-        <!-- <div class="avatar w-full h-full relative">
+      <li v-for="user in pool" :key="user.id" class="flex-shrink-0 flex-basis-160px mb-6">
+        <!-- 头像 -->
+        <div
+          class="bg-no-repeat bg-contain bg-center rounded-1/2 overflow-hidden w-100px h-100px mx-center"
+          :style="{ backgroundImage: `url(${user.avatar})` }"
+        >
+          <!-- 动态头像框 -->
           <img
-            class="rounded-50% absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            width="90%"
-            height="90%"
-            :src="user.avatar"
+            class="avatar-rotate w-full h-full"
+            src="https://pic.snsboat.com/saas/normal/customer/61/15607/X77bXJ5EY6QZ8Pis5R5kQ/2024/4/16/55fefd5d1efca0f25371cbe0f91886ec.png?v=51&imageMogr2/0/w/3000"
             alt=""
           />
         </div>
-        <span class="text-#fff176 text-sm">{{ user.nickname }}</span> -->
+        <span class="text-#fff176 text-sm font-bold">{{ user.nickname }}</span>
       </li>
     </ul>
   </div>
@@ -47,7 +43,7 @@ defineOptions({
 });
 
 const pool = ref(
-  Array.from({ length: 30 }, (_, index) => ({
+  Array.from({ length: 3 }, (_, index) => ({
     id: index,
     nickname: '阿斯蒂芬拿到',
     avatar: 'https://tdesign.gtimg.com/site/avatar.jpg',
@@ -56,7 +52,7 @@ const pool = ref(
 </script>
 
 <style scoped lang="less">
-@import '@/style/mixin.less';
+@import url('@/style/mixin.less');
 
 .zoom-in-down {
   animation-name: zoomInDown;
