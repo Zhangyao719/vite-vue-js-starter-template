@@ -1,7 +1,8 @@
 <template>
   <section class="h-full text-center relative">
     <span class="absolute text-#fff176 text-[30px] font-bold left-1/2 -translate-x-1/2">
-      {{ prizeInfo.label ?? '' }}
+      {{ prizeInfo.prizeLevel?.label ?? '' }} —
+      {{ PrizeScene[prizeInfo.prizeScene] }}
     </span>
     <img
       src="https://pic.snsboat.com/saas/normal/customer/61/15607/X77bXJ5EY6QZ8Pis5R5kQ/2024/4/16/75c169b82a471d64c2462d54b9147588.png?v=51&imageMogr2/auto-orient/ignore-error/1"
@@ -28,14 +29,15 @@
 </template>
 
 <script setup>
-import { ref, inject, computed } from 'vue';
+import { ref, inject, computed, toRefs } from 'vue';
 import Start from './components/LotteryStart.vue';
 import Loading from './components/LotteryLoading.vue';
 import Result from './components/LotteryResult.vue';
-import { LotteryConfig, MusicConfig } from './constant';
+import { LotteryConfig, MusicConfig, PrizeScene } from './constant';
 import useMusic from '@/hooks/useMusic';
 import { useUserStore } from '@/store/modules/user.js';
 import { lottery } from '@/api/lottery';
+import { ACTIVITY_ID } from '@/utils/constant';
 
 defineOptions({
   name: 'Lottery',
@@ -48,8 +50,14 @@ defineOptions({
 
 const { selectMusic } = useMusic();
 
-const prizeInfo = inject('prizeInfo');
-const disabled = computed(() => !prizeInfo.value?.value || !prizeInfo.value?.num);
+const prizeInfo = inject('prizeInfo', {
+  prizeLevel: {},
+  prizeNum: undefined,
+  prizeScene: PrizeScene.Indoor,
+});
+const disabled = computed(() => {
+  return !prizeInfo.prizeLevel?.label || !prizeInfo.prizeNum;
+});
 
 // #region 抽奖环节
 const userStore = useUserStore();
@@ -65,7 +73,7 @@ const handleClick = async (tab) => {
       // 1. 开始抽奖 → 抽奖中
       loading.value = true;
       try {
-        await userStore.fetchAllSignInUser();
+        await userStore.fetchAllSignInUsers(ACTIVITY_ID.YEAR2025);
         activeTab.value = LotteryConfig.Loading;
         selectMusic(MusicConfig.Loading);
       } finally {

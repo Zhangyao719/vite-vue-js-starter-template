@@ -1,4 +1,4 @@
-import { post } from '@/utils/request';
+import { get, post } from '@/utils/request';
 
 /**
  * @description 用户签到
@@ -8,20 +8,28 @@ import { post } from '@/utils/request';
  */
 export const signIn = (code, activityId) => post('/prize-draw-user/create', undefined, { code, activityId });
 
-/** @description 获取所有签到用户 */
-// export const getAllSignInUser = () => get('/prize-draw-user/list');
-export const getAllSignInUser = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(
-        Array.from({ length: 10 }).map((_, index) => ({
-          nickname: `张三${index}`,
-          headimgurl:
-            Math.floor(Math.random() * 2) % 2 === 0
-              ? 'https://tdesign.gtimg.com/demo/demo-image-1.png'
-              : 'https://tdesign.gtimg.com/site/avatar.jpg',
-        })),
-      );
-    }, 3000);
-  });
+/**
+ * @description 获取所有签到用户
+ * @param {number} activityId 活动id
+ */
+export const getAllSignInUsers = (activityId) => {
+  return get('/prize-draw-user/getAllPrizeDraUser', { activityId });
+};
+
+/**
+ * @description 获取所有中奖用户
+ * @param {number} activityId 活动id
+ * @param {number} prizeLevel 奖品等级
+ */
+export const getAllWinners = (activityId, prizeLevel) => {
+  return get('/prize-draw-user/getAllWinner', { activityId, prizeLevel });
+};
+
+/**
+ * @description 获取某个用户的中奖信息
+ * @param {number} activityId 活动id
+ * @param {number} openId 用户微信的openId
+ */
+export const getPrizeInfoByOpenId = (activityId, openId) => {
+  return get('/prize-draw-user/checkWinner', { activityId, openId });
 };

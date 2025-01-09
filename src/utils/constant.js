@@ -5,5 +5,5 @@ export const APP_INFO = {
 };
 
 export const ACTIVITY_ID = {
-  YEAR2025: '11',
+  YEAR2025: 11,
 };

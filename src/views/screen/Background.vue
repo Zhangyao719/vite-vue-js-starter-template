@@ -38,23 +38,24 @@
     >
       <t-button class="mr-4!" @click="backHome">首页</t-button>
       <t-button class="mr-4!" @click="router.push({ name: 'Lottery' })"> 大屏抽奖 </t-button>
-      <t-select
-        v-model="prizeType"
-        class="inline-block w-150px! mr-4!"
-        placeholder="-选择奖项-"
-        @change="onPrizeChange"
-      >
-        <t-option v-for="p in PrizeOptions" :key="p.value" :value="p.value" :label="p.label" />
+      <!-- 选择抽奖等级 -->
+      <t-select v-model="prizeLevel" valueType="object" class="inline-block w-150px! mr-4!" placeholder="-选择奖项-">
+        <t-option v-for="p in lotteryStore.prizeLevelOptions" :key="p.value" :value="p.value" :label="p.label" />
       </t-select>
+      <!-- 选择场内/场外 -->
+      <t-radio-group v-model="prizeScene" variant="primary-filled" class="align-middle mr-4!">
+        <t-radio-button :value="PrizeScene.Indoor">{{ PrizeScene[1] }}</t-radio-button>
+        <t-radio-button :value="PrizeScene.Outdoor">{{ PrizeScene[2] }}</t-radio-button>
+      </t-radio-group>
+      <!-- 选择抽奖人数 -->
       <t-input-number
         v-model="prizeNum"
-        class="align-middle w-150px!"
+        class="align-middle w-160px!"
         theme="column"
         align="center"
         :max="100"
         :min="1"
-        label="人数"
-        @change="onNumchange"
+        label="中奖人数"
       />
     </t-drawer>
 
@@ -87,8 +88,10 @@ import { ref, provide, readonly, watch, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { IconFont } from 'tdesign-icons-vue-next';
 import useMusic from '@/hooks/useMusic';
-import { PrizeOptions, getPrizeInfo, MusicConfig } from './constant';
+import { MusicConfig, PrizeScene } from './constant';
 import { getActivityDetail, getWxQrCodeImg } from '@/api/lottery';
+import { useLotteryStore } from '@/store/modules/lottery';
+import { ACTIVITY_ID } from '@/utils/constant';
 
 defineOptions({
   name: 'ScreenBackground',
@@ -114,15 +117,14 @@ watch(
 
 // #region 工具栏
 const show = ref(false);
-const prizeType = ref();
-const prizeInfo = ref({});
-const onPrizeChange = (value) => {
-  Object.assign(prizeInfo.value, getPrizeInfo(value));
-};
-const prizeNum = ref();
-const onNumchange = (num) => {
-  Object.assign(prizeInfo.value, { num });
-};
+const prizeScene = ref(PrizeScene.Indoor); // 抽奖场景
+const prizeNum = ref(); // 抽奖人数
+const prizeLevel = ref(); // 抽奖等级
+const prizeInfo = reactive({
+  prizeLevel,
+  prizeScene,
+  prizeNum,
+});
 // 将当前奖项信息注入给子组件
 provide('prizeInfo', readonly(prizeInfo));
 
@@ -145,6 +147,12 @@ onBeforeMount(() => {
   getQrCodeImg();
 });
 //#endregion
+
+// 获取抽奖的等级信息
+const lotteryStore = useLotteryStore();
+onBeforeMount(() => {
+  lotteryStore.fetchPrizeLevels(ACTIVITY_ID.YEAR2025);
+});
 </script>
 
 <style scoped lang="less">

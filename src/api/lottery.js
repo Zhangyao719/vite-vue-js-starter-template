@@ -17,6 +17,11 @@ export const getWxQrCodeImg = (ticket) => {
 };
 
 /**
+ * @description 查询当前活动设立的抽奖等级
+ */
+export const getPrizeLevels = (activityId) => get('/system/dict-data/getPrizeLevel', { activityId });
+
+/**
  * @description 抽奖
  * @param {number | string} activityId 活动id
  * @param {number | string} activityType 活动类型
