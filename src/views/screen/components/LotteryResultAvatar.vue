@@ -39,7 +39,7 @@
 import { inject } from 'vue';
 
 defineOptions({
-  name: 'LotteryResult',
+  name: 'LotteryResultAvatar',
 });
 
 const { winningUsers, setWinningUsers } = inject('winningUsers');

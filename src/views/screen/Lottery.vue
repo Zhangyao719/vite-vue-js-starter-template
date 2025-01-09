@@ -23,28 +23,32 @@
       :disabled="disabled"
       @click="handleClick(activeTab.component)"
     >
-      {{ activeTab.label }}
+      {{ activeTab.buttonLabel }}
     </t-button>
   </section>
 </template>
 
 <script setup>
 import { ref, inject, computed, toRefs } from 'vue';
-import Start from './components/LotteryStart.vue';
-import Loading from './components/LotteryLoading.vue';
-import Result from './components/LotteryResult.vue';
-import { LotteryConfig, MusicConfig, PrizeScene } from './constant';
 import useMusic from '@/hooks/useMusic';
 import { useUserStore } from '@/store/modules/user.js';
 import { lotteryIndoor, lotteryOutdoor } from '@/api/lottery';
 import { ACTIVITY_ID } from '@/utils/constant';
+import { LotteryConfig, MusicConfig, PrizeScene } from './constant';
+import Start from './components/LotteryStart.vue';
+import LoadingAvatar from './components/LotteryLoadingAvatar.vue';
+import LoadingBar from './components/LotteryLoadingBar.vue';
+import ResultAvatar from './components/LotteryResultAvatar.vue';
+import ResultBar from './components/LotteryResultBar.vue';
 
 defineOptions({
   name: 'Lottery',
   components: {
     Start,
-    Loading,
-    Result,
+    LoadingAvatar,
+    LoadingBar,
+    ResultAvatar,
+    ResultBar,
   },
 });
 
@@ -61,6 +65,8 @@ const { prizeLevel, prizeNum, prizeScene } = toRefs(prizeInfo);
 const disabled = computed(() => {
   return !prizeLevel.value?.label || !prizeNum.value;
 });
+
+const isIndoor = computed(() => prizeScene.value === PrizeScene.Indoor);
 
 // #region 抽奖环节
 const userStore = useUserStore();
@@ -81,7 +87,7 @@ const handleClick = async (tab) => {
       loading.value = true;
       try {
         // 先获取抽奖池人员（用于转场过渡）
-        if (prizeScene.value === PrizeScene.Indoor) {
+        if (isIndoor.value) {
           await userStore.fetchAllSignInUsers(ACTIVITY_ID.YEAR2025);
           // 场内抽奖前判断人数是否满足抽奖条件
           if (prizeNum.value > userStore.signInUsersTotal) {
@@ -91,25 +97,27 @@ const handleClick = async (tab) => {
           // 场外人数众多，无需校验
           await userStore.fetchRandomOutdoorUsers(ACTIVITY_ID.YEAR2025);
         }
-        activeTab.value = LotteryConfig.Loading;
+        // 再切换至下一个环节
+        activeTab.value = isIndoor.value ? LotteryConfig.LoadingAvatar : LotteryConfig.LoadingBar;
         selectMusic(MusicConfig.Loading);
       } finally {
         loading.value = false;
       }
       break;
-    case LotteryConfig.Loading.component:
+    case LotteryConfig.LoadingAvatar.component:
+    case LotteryConfig.LoadingBar.component:
       // 2. 抽奖中 → 抽奖结果
       loading.value = true;
       try {
+        // 先获取中奖名单
         const params = {
           activityId: ACTIVITY_ID.YEAR2025,
           prizePool: prizeLevel.value?.value,
           winNum: prizeNum.value,
         };
-        winningUsers.value = await (prizeScene.value === PrizeScene.Indoor
-          ? lotteryIndoor(params)
-          : lotteryOutdoor(params));
-        activeTab.value = LotteryConfig.Result;
+        winningUsers.value = await (isIndoor.value ? lotteryIndoor(params) : lotteryOutdoor(params));
+        // 再切换至下一个环节
+        activeTab.value = isIndoor.value ? LotteryConfig.ResultAvatar : LotteryConfig.ResultBar;
         selectMusic(MusicConfig.Result);
       } catch (e) {
         reset();
@@ -117,7 +125,8 @@ const handleClick = async (tab) => {
         loading.value = false;
       }
       break;
-    case LotteryConfig.Result.component:
+    case LotteryConfig.ResultAvatar.component:
+    case LotteryConfig.ResultBar.component:
       //  3. 抽奖结果 → 返回开始抽奖
       reset();
       break;

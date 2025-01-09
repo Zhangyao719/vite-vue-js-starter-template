@@ -19,7 +19,7 @@ export const useLotteryStore = defineStore('lottery', {
     async fetchPrizeLevels(activityId) {
       if (this.prizeLevels.length) return;
       const data = await getPrizeLevels(activityId);
-      this.prizeLevels = data;
+      this.prizeLevels = data || [];
     },
   },
 });

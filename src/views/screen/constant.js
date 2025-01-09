@@ -14,15 +14,25 @@ export const PrizeScene = {
 export const LotteryConfig = {
   Start: {
     component: 'Start',
-    label: '开始',
+    buttonLabel: '开始',
   },
-  Loading: {
-    component: 'Loading',
-    label: '停止',
+  // 场内——头像转场过渡
+  LoadingAvatar: {
+    component: 'LoadingAvatar',
+    buttonLabel: '停止',
   },
-  Result: {
-    component: 'Result',
-    label: '返回',
+  // 场外——条形图转场过渡
+  LoadingBar: {
+    component: 'LoadingBar',
+    buttonLabel: '停止',
+  },
+  ResultAvatar: {
+    component: 'ResultAvatar',
+    buttonLabel: '返回',
+  },
+  ResultBar: {
+    component: 'ResultBar',
+    buttonLabel: '返回',
   },
 };
 

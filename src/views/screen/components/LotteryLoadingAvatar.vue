@@ -1,5 +1,4 @@
 <template>
-  <!-- <ul class="grid h-400px overflow-y-scroll bg-slate-100/[0.2]"> -->
   <ul class="pool grid grid-cols-10 px-5% mb-30px">
     <!-- 过渡效果，固定 30 个位置 -->
     <li v-for="(user, index) in pool" :key="index" class="inline-flex flex-col justify-center items-center">
@@ -16,7 +15,7 @@ import { onBeforeMount, onBeforeUnmount } from 'vue';
 import { useUserStore } from '@/store/modules/user.js';
 
 defineOptions({
-  name: 'LotteryLoading',
+  name: 'LotteryLoadingAvatar',
 });
 
 //#region 抽奖池
