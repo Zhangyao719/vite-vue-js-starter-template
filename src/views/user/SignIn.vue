@@ -5,7 +5,7 @@
 --td-brand-color: #fedc83" />
     <!-- 用户信息 -->
     <div class="w-full h-1/2 flex-center flex-col">
-      <t-avatar image="https://tdesign.gtimg.com/site/avatar.jpg" size="3.5rem" />
+      <t-avatar :image="userInfo.headimgurl" size="3.5rem" />
       <div class="text-#FEDC83 text-center">
         <p class="text-base font-bold mt-4">{{ userInfo.nickname || '用户昵称' }}</p>
         <p class="mt-3">
@@ -36,6 +36,8 @@ import { DialogPlugin } from 'tdesign-vue-next';
 import { authorize, handleUnlogin } from '@/utils/authorize';
 import { signIn } from '@/api/user';
 import useCache from '@/utils/storage';
+import { ACTIVITY_ID } from '@/utils/constant';
+import { formatToDateTime } from '@/utils/date';
 
 defineOptions({
   name: 'SignIn', // 签到即登录
@@ -55,7 +57,8 @@ const handleCommand = async (/* command */) => {
   if (isLogin.value) return;
   loading.value = true;
   try {
-    const info = await signIn(wxCode.value, 1);
+    const info = await signIn(wxCode.value, ACTIVITY_ID.YEAR2025);
+    info.createTime = formatToDateTime(info.createTime);
     wsCache.set(CACHE_KEY.USER, info);
     Object.assign(userInfo, info);
   } catch (err) {
