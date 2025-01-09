@@ -13,13 +13,6 @@ const instance = axios.create({
 // 前置拦截器（发起请求之前的拦截）
 instance.interceptors.request.use(
   (config) => {
-    /**
-     * 在这里一般会携带前台的参数发送给后台，比如下面这段代码：
-     * const token = getToken()
-     * if (token) {
-     *  config.headers.token = token
-     * }
-     */
     return config;
   },
   (error) => {
@@ -31,17 +24,24 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     const { data, config } = response;
-    const code = data.code || 500;
+    // eslint-disable-next-line prefer-destructuring
+    const code = data.code;
     const msg = data.msg || '系统未知错误';
-
-    // 成功
-    if (code === 200) return data.data || {};
-    // 失败
-    if (!config.headers['X-Response-Handler']) {
-      // 是否需要报错
-      MessagePlugin.error(msg);
+    switch (code) {
+      case 0:
+        // 项目后端返回成功
+        return data.data || {};
+      case 200:
+        // 其他服务器返回成功
+        return data;
+      default:
+        // 失败
+        if (!config.headers['X-Response-Handler']) {
+          // 是否需要报错
+          MessagePlugin.error(msg);
+        }
+        return Promise.reject(data);
     }
-    return Promise.reject(data);
   },
   (error) => {
     console.log('axios err: ' + error);

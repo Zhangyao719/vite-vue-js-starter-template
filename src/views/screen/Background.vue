@@ -17,7 +17,10 @@
     </div>
 
     <!-- 工具栏 -->
-    <span class="action-btn rounded-50% w-46px h-46px z-1" @click="show = !show">
+    <span
+      class="action-btn absolute top-15% left-2.5% rounded-50% w-46px h-46px z-1 hover:cursor-pointer"
+      @click="show = !show"
+    >
       <icon-font
         class="absolute top-50% left-50% translate-x--50% translate-y--50%"
         name="setting-1"
@@ -55,6 +58,21 @@
       />
     </t-drawer>
 
+    <!-- 活动二维码 -->
+    <t-tooltip trigger="click" placement="right">
+      <span class="action-btn absolute top-23% left-2.5% rounded-50% w-46px h-46px z-1 hover:cursor-pointer">
+        <icon-font
+          class="absolute top-50% left-50% translate-x--50% translate-y--50%"
+          name="qrcode"
+          size="30px"
+          style="color: #fff176"
+        />
+      </span>
+      <template #content>
+        <img :src="qrCodeSrc" class="w-200px h-200px" alt="参与二维码" />
+      </template>
+    </t-tooltip>
+
     <!-- 子路由 -->
     <router-view v-slot="{ Component }">
       <transition name="fade">
@@ -65,11 +83,12 @@
 </template>
 
 <script setup>
-import { ref, provide, readonly, watch } from 'vue';
+import { ref, provide, readonly, watch, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { IconFont } from 'tdesign-icons-vue-next';
 import useMusic from '@/hooks/useMusic';
 import { PrizeOptions, getPrizeInfo, MusicConfig } from './constant';
+import { getActivityDetail, getWxQrCodeImg } from '@/api/lottery';
 
 defineOptions({
   name: 'ScreenBackground',
@@ -113,6 +132,19 @@ const backHome = () => {
   router.push({ name: 'ScreenWelcome' });
 };
 // #endregion
+
+//#region 获取活动二维码
+const qrCodeSrc = ref('');
+const getQrCodeImg = async () => {
+  const activityInfo = await getActivityDetail();
+  if (activityInfo) {
+    qrCodeSrc.value = await getWxQrCodeImg(activityInfo.ticket);
+  }
+};
+onBeforeMount(() => {
+  getQrCodeImg();
+});
+//#endregion
 </script>
 
 <style scoped lang="less">
@@ -150,14 +182,7 @@ const backHome = () => {
 }
 
 .action-btn {
-  position: absolute;
-  top: 15%;
-  left: 2.5%;
   border: 2px solid #fff176;
-
-  &:hover {
-    cursor: pointer;
-  }
 }
 
 :global(.setting-drawer .t-drawer__mask) {

@@ -3,3 +3,7 @@ export const APP_INFO = {
   SERVICE_ID: 'wx145112d98bdbfbfe', // 服务号appid
   REDIRECT_URL: 'https://szh.jshkxcl.cn/wx/getWxGzhAuthCode.html', // 授权回调地址
 };
+
+export const ACTIVITY_ID = {
+  YEAR2025: '11',
+};
