@@ -9,11 +9,19 @@ import { get, post } from '@/utils/request';
 export const signIn = (code, activityId) => post('/prize-draw-user/create', undefined, { code, activityId });
 
 /**
- * @description 获取所有签到用户
+ * @description 获取所有场内签到用户（排除已中奖的用户）
  * @param {number} activityId 活动id
  */
 export const getAllSignInUsers = (activityId) => {
   return get('/prize-draw-user/getAllPrizeDraUser', { activityId });
+};
+
+/**
+ * @description 随机获取 100 名场外的导入用户（排除已中奖的用户）
+ * @param {number} activityId 活动id
+ */
+export const getRandomOutdoorUsers = (activityId) => {
+  return get('/prize-draw-out-user/getRandOutUser', { activityId });
 };
 
 /**

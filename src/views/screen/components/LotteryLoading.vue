@@ -2,7 +2,7 @@
   <!-- <ul class="grid h-400px overflow-y-scroll bg-slate-100/[0.2]"> -->
   <ul class="pool grid grid-cols-10 px-5% mb-30px">
     <!-- 过渡效果，固定 30 个位置 -->
-    <li v-for="user in pool" :key="user.id" class="inline-flex flex-col justify-center items-center">
+    <li v-for="(user, index) in pool" :key="index" class="inline-flex flex-col justify-center items-center">
       <div class="avatar w-112px h-112px relative">
         <img class="absolute-center object-fill w-90% h-90% rounded-50%" :src="user.headimgurl" alt="" />
       </div>
@@ -23,7 +23,7 @@ defineOptions({
 const userStore = useUserStore();
 const pool = ref([]);
 const setPool = () => {
-  pool.value = userStore.getRandomUsers();
+  pool.value = userStore.getRandomSignInUsers();
 };
 const timer = ref(null);
 onBeforeMount(() => {

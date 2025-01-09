@@ -16,7 +16,7 @@
   <!-- 中奖名单 -->
   <div class="zoom-in-down min-h-400px max-h-75% px-5% mb-30px overflow-y-auto scrollbar">
     <ul class="flex flex-wrap justify-center">
-      <li v-for="user in winningUsers" :key="user.id" class="flex-shrink-0 flex-basis-160px mb-6">
+      <li v-for="user in winningUsers" :key="user.openid" class="flex-shrink-0 flex-basis-160px mb-6">
         <!-- 头像 -->
         <div
           class="bg-no-repeat bg-cover bg-center rounded-1/2 overflow-hidden w-100px h-100px mx-center"
