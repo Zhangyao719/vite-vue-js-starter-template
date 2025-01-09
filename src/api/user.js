@@ -33,7 +33,7 @@ export const getAllSignInUser = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(
-        Array.from({ length: 200 }).map((_, index) => ({
+        Array.from({ length: 10 }).map((_, index) => ({
           nickname: `张三${index}`,
           headimgurl:
             Math.floor(Math.random() * 2) % 2 === 0

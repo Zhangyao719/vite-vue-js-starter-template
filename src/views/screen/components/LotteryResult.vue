@@ -16,11 +16,11 @@
   <!-- 中奖名单 -->
   <div class="zoom-in-down min-h-400px max-h-75% px-5% mb-30px overflow-y-auto scrollbar">
     <ul class="flex flex-wrap justify-center">
-      <li v-for="user in pool" :key="user.id" class="flex-shrink-0 flex-basis-160px mb-6">
+      <li v-for="user in winningUsers" :key="user.id" class="flex-shrink-0 flex-basis-160px mb-6">
         <!-- 头像 -->
         <div
-          class="bg-no-repeat bg-contain bg-center rounded-1/2 overflow-hidden w-100px h-100px mx-center"
-          :style="{ backgroundImage: `url(${user.avatar})` }"
+          class="bg-no-repeat bg-cover bg-center rounded-1/2 overflow-hidden w-100px h-100px mx-center"
+          :style="{ backgroundImage: `url(${user.headimgurl})` }"
         >
           <!-- 动态头像框 -->
           <img
@@ -29,26 +29,20 @@
             alt=""
           />
         </div>
-        <span class="text-#fff176 text-sm font-bold">{{ user.nickname }}</span>
+        <span class="text-#fff176 text-sm font-bold">{{ user.nickname || '' }}</span>
       </li>
     </ul>
   </div>
 </template>
 
 <script setup>
-import {} from 'vue';
+import { inject } from 'vue';
 
 defineOptions({
   name: 'LotteryResult',
 });
 
-const pool = ref(
-  Array.from({ length: 3 }, (_, index) => ({
-    id: index,
-    nickname: '阿斯蒂芬拿到',
-    avatar: 'https://tdesign.gtimg.com/site/avatar.jpg',
-  })),
-);
+const { winningUsers, setWinningUsers } = inject('winningUsers');
 </script>
 
 <style scoped lang="less">

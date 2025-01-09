@@ -51,10 +51,14 @@ const { selectMusic } = useMusic();
 const prizeInfo = inject('prizeInfo');
 const disabled = computed(() => !prizeInfo.value?.value || !prizeInfo.value?.num);
 
-// 当前的抽奖环节
+// #region 抽奖环节
 const userStore = useUserStore();
 const activeTab = ref(LotteryConfig.Start);
 const loading = ref(false);
+const winningUsers = ref([]); // 中奖名单
+const setWinningUsers = (list) => {
+  winningUsers.value = list;
+};
 const handleClick = async (tab) => {
   switch (tab) {
     case LotteryConfig.Start.component:
@@ -70,10 +74,11 @@ const handleClick = async (tab) => {
       break;
     case LotteryConfig.Loading.component:
       // 2. 抽奖中 → 抽奖结果
+      loading.value = true;
       try {
         // todo: 调用抽奖接口
         console.log(prizeInfo.value);
-        await lottery();
+        winningUsers.value = await lottery();
         activeTab.value = LotteryConfig.Result;
         selectMusic(MusicConfig.Result);
       } finally {
@@ -89,6 +94,11 @@ const handleClick = async (tab) => {
       break;
   }
 };
+provide('winningUsers', {
+  winningUsers,
+  setWinningUsers,
+});
+// #endregion
 
 onMounted(() => {
   selectMusic(MusicConfig.Start);
