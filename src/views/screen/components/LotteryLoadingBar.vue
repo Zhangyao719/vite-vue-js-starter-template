@@ -30,7 +30,7 @@ const timer = ref(null);
 onBeforeMount(() => {
   timer.value = setInterval(() => {
     setPool();
-  }, 200);
+  }, 150);
 });
 onBeforeUnmount(() => {
   if (timer.value) clearInterval(timer.value);
