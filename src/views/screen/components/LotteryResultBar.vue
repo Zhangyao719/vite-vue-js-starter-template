@@ -22,8 +22,8 @@
         class="bar h-6vh line-height-6vh bg-[length:100%_100%] bg-no-repeat flex justify-around text-3.5vh"
       >
         <span class="w-33.3% font-bold">{{ user.nickname }}</span>
-        <span class="flex-grow-1 font-bold">{{ user.workname }}</span>
-        <span class="flex-grow-1 font-bold">{{ user.mobile }}</span>
+        <span class="flex-grow-1 font-bold">{{ user.workNum }}</span>
+        <span class="flex-grow-1 font-bold">{{ user.dept }}</span>
       </li>
     </ul>
   </div>

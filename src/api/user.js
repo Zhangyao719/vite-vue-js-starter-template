@@ -20,7 +20,7 @@ export const getAllSignInUsers = (activityId) => {
  * @description 随机获取 100 名场外的导入用户（排除已中奖的用户）
  * @param {number} activityId 活动id
  */
-export const getRandomOutdoorUsers = (activityId) => {
+export const getHundredOutdoorUsers = (activityId) => {
   return get('/prize-draw-out-user/getRandOutUser', { activityId });
 };
 

@@ -6,8 +6,8 @@
       class="bar first:mt-0 h-7vh line-height-7vh bg-[length:100%_100%] bg-no-repeat flex justify-around text-3.6vh mt-0.5%"
     >
       <span class="w-33.3% font-bold">{{ user.nickname }}</span>
-      <span class="flex-grow-1 font-bold">{{ user.workname }}</span>
-      <span class="flex-grow-1 font-bold">{{ user.mobile }}</span>
+      <span class="flex-grow-1 font-bold">{{ user.workNum }}</span>
+      <span class="flex-grow-1 font-bold">{{ user.dept }}</span>
     </li>
   </ul>
 </template>
@@ -40,6 +40,6 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .bar {
-  background-image: url("../../../assets/imgs/bar.png");
+  background-image: url('../../../assets/imgs/bar.png');
 }
 </style>
