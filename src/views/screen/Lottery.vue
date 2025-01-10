@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref, inject, computed, toRefs } from 'vue';
+import { ref, inject, computed, toRefs, defineExpose } from 'vue';
 import { useDebounceFn } from '@vueuse/core';
 import useMusic from '@/hooks/useMusic';
 import { useUserStore } from '@/store/modules/user.js';
@@ -74,13 +74,16 @@ const userStore = useUserStore();
 const activeTab = ref(LotteryConfig.Start);
 const loading = ref(false);
 const winningUsers = ref([]); // 中奖名单
+
 const setWinningUsers = (list) => {
   winningUsers.value = list;
 };
+
 const reset = () => {
   activeTab.value = LotteryConfig.Start;
   selectMusic(MusicConfig.Start);
 };
+
 const handleClick = useDebounceFn(async (tab) => {
   switch (tab) {
     case LotteryConfig.Start.component:
@@ -134,9 +137,13 @@ const handleClick = useDebounceFn(async (tab) => {
       break;
   }
 }, 500);
+
 provide('winningUsers', {
   winningUsers,
   setWinningUsers,
+});
+defineExpose({
+  resetLottery: reset,
 });
 // #endregion
 

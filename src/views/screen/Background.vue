@@ -65,7 +65,7 @@
         :min="1"
         label="中奖人数"
       />
-      <t-button class="mr-4!" @click="router.push({ name: 'Lottery' })"> 大屏抽奖 </t-button>
+      <t-button class="mr-4!" @click="startLottery"> 大屏抽奖 </t-button>
     </t-drawer>
 
     <!-- 活动二维码 -->
@@ -101,14 +101,14 @@
     <!-- 子路由 -->
     <router-view v-slot="{ Component }">
       <transition name="fade">
-        <component :is="Component" />
+        <component :is="Component" ref="lotteryRef" />
       </transition>
     </router-view>
   </div>
 </template>
 
 <script setup>
-import { ref, provide, readonly, watch, onBeforeMount, computed, watchEffect } from 'vue';
+import { ref, provide, readonly, watch, onBeforeMount, useTemplateRef } from 'vue';
 import { useRouter } from 'vue-router';
 import { IconFont } from 'tdesign-icons-vue-next';
 import useMusic from '@/hooks/useMusic';
@@ -161,10 +161,18 @@ const backHome = () => {
   selectMusic(MusicConfig.Bgm);
   router.push({ name: 'ScreenWelcome' });
 };
+
+// 开始大屏抽奖
+const lotteryRef = useTemplateRef('lotteryRef');
+const startLottery = () => {
+  if (lotteryRef.value) lotteryRef.value?.resetLottery();
+  router.push({ name: 'Lottery' });
+};
 // #endregion
 
 //#region 获取活动二维码
 const qrCodeSrc = ref('');
+
 // 默认选中第一个活动
 watch(
   () => lotteryStore.activityOptions.length,
@@ -176,6 +184,7 @@ watch(
   },
   { once: true },
 );
+
 // 切换活动，重新获取二维码
 const onActivityChange = () => getQrCodeImg();
 const getQrCodeImg = async () => {
