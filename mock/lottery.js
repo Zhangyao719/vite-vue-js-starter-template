@@ -37,10 +37,12 @@ export default [
     response: () => {
       return {
         code: 0,
-        data: [
-          { openid: 'openid1', nickname: '撒大大撒', headimgurl: 'https://tdesign.gtimg.com/site/avatar.jpg' },
-          { openid: 'openid2', nickname: '撒大大撒123asd', headimgurl: 'https://tdesign.gtimg.com/site/avatar.jpg' },
-        ],
+        data: Array.from({ length: 30 }).map((_, index) => ({
+          id: index + 1,
+          openid: 'openid' + index,
+          nickname: '撒大大撒' + index,
+          headimgurl: 'https://tdesign.gtimg.com/site/avatar.jpg',
+        })),
       };
     },
   },

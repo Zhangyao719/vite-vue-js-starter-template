@@ -167,6 +167,7 @@ const lotteryRef = useTemplateRef('lotteryRef');
 const startLottery = () => {
   if (lotteryRef.value?.resetLottery) lotteryRef.value?.resetLottery();
   router.push({ name: 'Lottery' });
+  show.value = false;
 };
 // #endregion
 

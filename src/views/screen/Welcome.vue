@@ -8,14 +8,14 @@
 
     <!-- 活动名称 -->
     <div class="select-none leading-relaxed font-bold break-all pointer-events-none tracking-3 mt-3vh">
-      <h1 class="text-4vw text-#fff176 font-bold">福满恒力一家亲</h1>
-      <h1 class="text text-4vw font-bold">恒力集团2025年新春联欢晚会</h1>
-      <h1 class="text-3vw text-#fff176 font-bold">（南通站）</h1>
+      <h1 class="text-8vh text-#fff176 font-bold">福满恒力一家亲</h1>
+      <h1 class="text text-7vh font-bold">恒力集团2025年新春联欢晚会</h1>
+      <h1 class="text-6vh text-#fff176 font-bold">（南通站）</h1>
     </div>
 
     <footer class="text-#fff176 absolute bottom-12vh left-1/2 transform -translate-x-1/2">
-      <p class="text-1.5vw">
-        <img class="align-middle w-2vw" src="@/assets/imgs/logo.png" height="auto" alt="" />
+      <p class="text-5vh">
+        <img class="align-middle w-5vh" src="@/assets/imgs/logo.png" height="auto" alt="" />
         恒科信息部
       </p>
     </footer>

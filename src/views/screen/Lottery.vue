@@ -1,10 +1,11 @@
 <template>
   <section class="h-full text-center relative">
-    <span class="absolute text-#fff176 text-[30px] font-bold left-1/2 -translate-x-1/2">
+    <span class="absolute text-#fff176 text-2vw font-bold left-1/2 -translate-x-1/2 tracking-2">
       {{ prizeLevel?.label ?? '' }} —
       {{ PrizeScene[prizeScene] }}
     </span>
     <img
+      class="mb-3vh"
       src="https://pic.snsboat.com/saas/normal/customer/61/15607/X77bXJ5EY6QZ8Pis5R5kQ/2024/4/16/75c169b82a471d64c2462d54b9147588.png?v=51&imageMogr2/auto-orient/ignore-error/1"
       alt=""
     />
@@ -16,8 +17,7 @@
     <t-button
       :loading="loading"
       block
-      class="operation w-200px!"
-      style="margin: 0 auto"
+      class="operation w-15vw! absolute! bottom-12vh left-1/2 -translate-x-1/2"
       shape="round"
       size="large"
       :disabled="disabled"

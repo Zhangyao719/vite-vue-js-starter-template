@@ -14,17 +14,17 @@
   </div>
 
   <!-- 中奖名单 -->
-  <div class="zoom-in-down min-h-400px max-h-75% px-5% mb-30px overflow-y-auto scrollbar">
-    <ul class="flex flex-wrap justify-center">
-      <li v-for="user in winningUsers" :key="user.openid" class="flex-shrink-0 flex-basis-160px mb-6">
+  <div class="zoom-in-down h-55vh mx-5% py-3vh bg-slate-50/20 overflow-y-auto scrollbar">
+    <ul class="flex justify-evenly items-center flex-wrap gap-2vh min-h-full">
+      <li v-for="user in winningUsers" :key="user.openid" class="flex-shrink-0 flex-basis-13vh">
         <!-- 头像 -->
         <div
-          class="bg-no-repeat bg-cover bg-center rounded-1/2 overflow-hidden w-100px h-100px mx-center"
+          class="bg-no-repeat bg-cover bg-center rounded-1/2 overflow-hidden w-full"
           :style="{ backgroundImage: `url(${user.headimgurl})` }"
         >
           <!-- 动态头像框 -->
           <img
-            class="avatar-rotate w-full h-full"
+            class="avatar-rotate w-full"
             src="https://pic.snsboat.com/saas/normal/customer/61/15607/X77bXJ5EY6QZ8Pis5R5kQ/2024/4/16/55fefd5d1efca0f25371cbe0f91886ec.png?v=51&imageMogr2/0/w/3000"
             alt=""
           />

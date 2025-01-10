@@ -1,8 +1,7 @@
 <template>
-  <div class="prize-image w-400px h-400px bg-no-repeat bg-center bg-cover mx-auto relative">
+  <div class="prize-image w-50vh h-50vh bg-no-repeat bg-center bg-cover mx-auto relative">
     <img
-      class="absolute top-1/2 left-1/2 translate-y--50% translate-x--50%"
-      width="200"
+      class="w-1/2 absolute top-1/2 left-1/2 translate-y--50% translate-x--50%"
       src="https://pic.snsboat.com/saas/normal/customer/80/73/DLjeXZ4RPrXnvZ58/2021/8/10/ea5d8736670dbad20077ca106c33125d.png"
       alt=""
     />
