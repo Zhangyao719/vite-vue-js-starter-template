@@ -1,20 +1,22 @@
 <template>
   <section class="h-full text-center relative">
     <img
-      class="w-20%"
+      class="w-20vw h-16vh"
       src="https://pic.snsboat.com/saas/normal/customer/61/83/A76QZ8LWcsYNLHkvZ56QZ8lw/2024/11/14/e0a3cb444e06ef6fe41a263828e11808.png"
       alt=""
     />
-    <div
-      class="text text-[200px] tracking-normal bg-clip-text text-transparent cursor-none break-all font-bold select-auto pointer-events-none leading-tight font"
-    >
-      年 会 盛 典
+
+    <!-- 活动名称 -->
+    <div class="select-none leading-relaxed font-bold break-all pointer-events-none tracking-3 mt-3vh">
+      <h1 class="text-4vw text-#fff176 font-bold">福满恒力一家亲</h1>
+      <h1 class="text text-4vw font-bold">恒力集团2025年新春联欢晚会</h1>
+      <h1 class="text-3vw text-#fff176 font-bold">（南通站）</h1>
     </div>
-    <footer class="text-#fff176 absolute bottom-120px left-1/2 transform -translate-x-1/2">
-      <p class="text-[50px]">
-        <img class="align-bottom" src="@/assets/imgs/logo.png" width="50" height="auto" alt="" />
-        江苏恒科新材料有限公司
-        <span class="block text-[20px] mt-4">技术支持 —— 恒科信息部</span>
+
+    <footer class="text-#fff176 absolute bottom-12vh left-1/2 transform -translate-x-1/2">
+      <p class="text-1.5vw">
+        <img class="align-middle w-2vw" src="@/assets/imgs/logo.png" height="auto" alt="" />
+        恒科信息部
       </p>
     </footer>
 
@@ -43,7 +45,9 @@ defineOptions({
 
 <style scoped>
 .text {
+  color: transparent;
   background-image: linear-gradient(-180deg, rgb(255 241 167) 26.82%, rgb(255 236 83) 63.18%, rgb(231 105 26) 85.91%);
+  background-clip: text;
   writing-mode: horizontal-tb;
   text-orientation: upright;
 }

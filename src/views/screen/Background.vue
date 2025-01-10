@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-background h-100vh min-h-2xl overflow-hidden relative pt-7%">
+  <div class="screen-background h-100vh overflow-hidden relative pt-12vh">
     <!-- 视频背景 -->
     <video class="absolute inset-0 w-full h-full object-fill" autoplay loop muted>
       <source
