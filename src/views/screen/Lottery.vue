@@ -30,6 +30,7 @@
 
 <script setup>
 import { ref, inject, computed, toRefs } from 'vue';
+import { useDebounceFn } from '@vueuse/core';
 import useMusic from '@/hooks/useMusic';
 import { useUserStore } from '@/store/modules/user.js';
 import { lotteryIndoor, lotteryOutdoor } from '@/api/lottery';
@@ -80,7 +81,7 @@ const reset = () => {
   activeTab.value = LotteryConfig.Start;
   selectMusic(MusicConfig.Start);
 };
-const handleClick = async (tab) => {
+const handleClick = useDebounceFn(async (tab) => {
   switch (tab) {
     case LotteryConfig.Start.component:
       // 1. 开始抽奖 → 抽奖中
@@ -126,13 +127,13 @@ const handleClick = async (tab) => {
       break;
     case LotteryConfig.ResultAvatar.component:
     case LotteryConfig.ResultBar.component:
-      //  3. 抽奖结果 → 返回开始抽奖
+      // 3. 抽奖结果 → 返回开始抽奖
       reset();
       break;
     default:
       break;
   }
-};
+}, 500);
 provide('winningUsers', {
   winningUsers,
   setWinningUsers,
