@@ -69,7 +69,7 @@
     </t-drawer>
 
     <!-- 活动二维码 -->
-    <t-tooltip trigger="click" placement="right">
+    <t-tooltip trigger="click" placement="right" overlayClassName="tooltip-overlay">
       <span class="action-btn absolute top-23% left-2.5% rounded-50% w-46px h-46px z-1 hover:cursor-pointer">
         <icon-font
           class="absolute top-50% left-50% translate-x--50% translate-y--50%"
@@ -79,7 +79,16 @@
         />
       </span>
       <template #content>
-        <img :src="qrCodeSrc" class="w-200px h-200px" alt="参与二维码" />
+        <div class="text-center">
+          <p class="text-2xl text-gray-200">1、扫描二维码</p>
+          <img :src="qrCodeSrc" width="280" alt="二维码" />
+          <br />
+          <p class="text-2xl text-gray-200">2、关注公众号</p>
+          <img src="@/assets/imgs/guide_follow.png" width="280" alt="" />
+          <br />
+          <p class="text-2xl text-gray-200">3、参与链接</p>
+          <img src="@/assets/imgs/guide_link.png" width="280" alt="" />
+        </div>
       </template>
     </t-tooltip>
 
@@ -149,7 +158,7 @@ const backHome = () => {
 // #endregion
 
 //#region 获取活动二维码
-const qrCodeSrc = ref('https://renmingliang.github.io/vue-lottery/img/QR-code.934f3fae.jpg');
+const qrCodeSrc = ref('');
 const onActivityChange = () => getQrCodeImg();
 const getQrCodeImg = async () => {
   // 1. 活动页需手动存储当前活动的 id
@@ -218,5 +227,9 @@ onBeforeMount(() => {
 
 :global(body) {
   width: 100% !important;
+}
+
+:global(.tooltip-overlay) {
+  top: 5vh !important;
 }
 </style>
