@@ -8,8 +8,9 @@ import Components from 'unplugin-vue-components/vite';
 import { TDesignResolver } from 'unplugin-vue-components/resolvers';
 import UnoCss from 'unocss/vite';
 import svgLoader from 'vite-svg-loader';
+import { viteMockServe } from 'vite-plugin-mock';
 
-export default ({ mode }) => {
+export default ({ mode, command }) => {
   const { VITE_PORT, VITE_BASE_URL } = loadEnv(mode, process.cwd());
 
   return defineConfig({
@@ -47,6 +48,11 @@ export default ({ mode }) => {
       svgLoader(),
       // https://github.com/unocss/unocss see unocss.config.ts for config
       UnoCss(),
+      viteMockServe({
+        enable: false, //command === 'serve',
+        mockPath: 'mock',
+        watchFiles: true,
+      }),
     ],
     resolve: {
       alias: {

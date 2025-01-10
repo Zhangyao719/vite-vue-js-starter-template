@@ -165,7 +165,7 @@ const backHome = () => {
 // 开始大屏抽奖
 const lotteryRef = useTemplateRef('lotteryRef');
 const startLottery = () => {
-  if (lotteryRef.value) lotteryRef.value?.resetLottery();
+  if (lotteryRef.value?.resetLottery) lotteryRef.value?.resetLottery();
   router.push({ name: 'Lottery' });
 };
 // #endregion
