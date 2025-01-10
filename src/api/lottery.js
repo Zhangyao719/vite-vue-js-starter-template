@@ -21,13 +21,6 @@ export const getActivityDetail = (id = activityId) => {
 };
 
 /**
- * @description 根据 ticket 生成二维码图片
- */
-export const getWxQrCodeImg = (ticket) => {
-  return get(`https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=${encodeURIComponent(ticket)}`);
-};
-
-/**
  * @description 查询当前活动设立的抽奖等级
  */
 export const getPrizeLevels = () => get('/system/dict-data/getPrizeLevel', { activityId });

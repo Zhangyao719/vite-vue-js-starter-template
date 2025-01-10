@@ -37,7 +37,6 @@
       size="100px"
     >
       <t-button class="mr-4!" @click="backHome">首页</t-button>
-      <t-button class="mr-4!" @click="router.push({ name: 'Lottery' })"> 大屏抽奖 </t-button>
       <!-- 选择活动 -->
       <t-select
         v-model="activityId"
@@ -59,13 +58,14 @@
       <!-- 选择抽奖人数 -->
       <t-input-number
         v-model="prizeNum"
-        class="align-middle w-160px!"
+        class="align-middle w-160px! mr-4!"
         theme="column"
         align="center"
         :max="100"
         :min="1"
         label="中奖人数"
       />
+      <t-button class="mr-4!" @click="router.push({ name: 'Lottery' })"> 大屏抽奖 </t-button>
     </t-drawer>
 
     <!-- 活动二维码 -->
@@ -107,9 +107,9 @@ import { useRouter } from 'vue-router';
 import { IconFont } from 'tdesign-icons-vue-next';
 import useMusic from '@/hooks/useMusic';
 import { MusicConfig, PrizeScene } from './constant';
-import { getWxQrCodeImg } from '@/api/lottery';
 import { useLotteryStore } from '@/store/modules/lottery';
 import useCache from '@/utils/storage';
+import { WX_QRCODE_HREF } from '@/utils/constant';
 
 defineOptions({
   name: 'ScreenBackground',
@@ -166,9 +166,7 @@ const getQrCodeImg = async () => {
   // 2. 获取该活动的 ticket
   const { ticket } = lotteryStore.getActivityById(activityId.value);
   // 3. 获取二维码
-  if (ticket) {
-    qrCodeSrc.value = await getWxQrCodeImg(ticket);
-  }
+  if (ticket) qrCodeSrc.value = WX_QRCODE_HREF + encodeURIComponent(ticket);
 };
 //#endregion
 
