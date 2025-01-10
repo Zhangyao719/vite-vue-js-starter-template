@@ -14,12 +14,12 @@
   </div>
 
   <!-- 中奖名单 -->
-  <div class="zoom-in-down min-h-400px max-h-75% px-5% mb-30px overflow-y-auto scrollbar">
-    <ul class="grid grid-cols-2 gap-x-1% gap-y-1%">
+  <div class="zoom-in-down h-55vh mx-5% py-3vh bg-black/15 overflow-y-auto scrollbar">
+    <ul class="flex justify-evenly items-center flex-wrap gap-1vh min-h-full">
       <li
         v-for="(user, index) in winningUsers"
         :key="index"
-        class="bar h-6vh line-height-6vh bg-[length:100%_100%] bg-no-repeat flex justify-around text-3.5vh"
+        class="bar flex-shrink-1 flex-basis-43% h-8vh line-height-8vh bg-[length:100%_100%] bg-no-repeat flex justify-around text-3.5vh"
       >
         <span class="w-33.3% font-bold">{{ user.nickname }}</span>
         <span class="flex-grow-1 font-bold">{{ user.workNum }}</span>

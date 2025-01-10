@@ -1,9 +1,9 @@
 <template>
-  <ul class="w-60% m-[0_auto] mb-30px gap-col-4">
+  <ul class="w-60% m-[0_auto] gap-col-4">
     <li
       v-for="(user, index) in pool"
       :key="index"
-      class="bar first:mt-0 h-7vh line-height-7vh bg-[length:100%_100%] bg-no-repeat flex justify-around text-3.6vh mt-0.5%"
+      class="bar first:mt-0 h-7vh line-height-7vh bg-[length:100%_100%] bg-no-repeat flex justify-around text-3.6vh mt-0.5% px-5%"
     >
       <span class="w-33.3% font-bold">{{ user.nickname }}</span>
       <span class="flex-grow-1 font-bold">{{ user.workNum }}</span>

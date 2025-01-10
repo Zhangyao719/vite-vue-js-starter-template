@@ -52,10 +52,11 @@ export default [
     response: () => {
       return {
         code: 0,
-        data: [
-          { nickname: '公孙乌龙', workNum: '10205891', dept: '加弹车间' },
-          { nickname: '张三丰', workNum: '10205891', dept: '啊实打实大撒旦' },
-        ],
+        data: Array.from({ length: 1 }).map((_, index) => ({
+          nickname: '公孙乌龙' + index,
+          workNum: '10205891',
+          dept: '加弹车间' + index,
+        })),
       };
     },
   },
