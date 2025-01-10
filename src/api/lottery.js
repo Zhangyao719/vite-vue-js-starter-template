@@ -5,6 +5,14 @@ const { wsCache, CACHE_KEY } = useCache();
 const activityId = wsCache.get(CACHE_KEY.ACTIVITY_ID);
 
 /**
+ * @description 获取所有活动列表
+ * @return {Promise<{ id: number; activityName: string; ticket: string }>} 返回活动详情
+ */
+export const getAllActivities = () => {
+  return get('/prize-draw-activity/getAllActivities');
+};
+
+/**
  * @description 根据活动id获取活动详情
  * @return {Promise<{ ticket: string; [key: string]: any }>} 返回活动详情
  */

@@ -38,6 +38,15 @@
     >
       <t-button class="mr-4!" @click="backHome">首页</t-button>
       <t-button class="mr-4!" @click="router.push({ name: 'Lottery' })"> 大屏抽奖 </t-button>
+      <!-- 选择活动 -->
+      <t-select
+        v-model="activity"
+        class="inline-block w-150px! mr-4!"
+        placeholder="-选择活动-"
+        @change="onActivityChange"
+      >
+        <t-option v-for="a in lotteryStore.activityOptions" :key="a.value" :value="a.value" :label="a.label" />
+      </t-select>
       <!-- 选择抽奖等级 -->
       <t-select v-model="prizeLevel" valueType="object" class="inline-block w-150px! mr-4!" placeholder="-选择奖项-">
         <t-option v-for="p in lotteryStore.prizeLevelOptions" :key="p.value" :value="p.value" :label="p.label" />
@@ -89,14 +98,17 @@ import { useRouter } from 'vue-router';
 import { IconFont } from 'tdesign-icons-vue-next';
 import useMusic from '@/hooks/useMusic';
 import { MusicConfig, PrizeScene } from './constant';
-import { getActivityDetail, getWxQrCodeImg } from '@/api/lottery';
+import { getWxQrCodeImg } from '@/api/lottery';
 import { useLotteryStore } from '@/store/modules/lottery';
+import useCache from '@/utils/storage';
 
 defineOptions({
   name: 'ScreenBackground',
 });
 
 const router = useRouter();
+const lotteryStore = useLotteryStore();
+const { wsCache, CACHE_KEY } = useCache();
 
 // #region 音频（背景音乐、抽奖音乐等）
 const { musicRef, musicState, classMusic, musicConfig, selectMusic, toggleMusic } = useMusic();
@@ -116,9 +128,10 @@ watch(
 
 // #region 工具栏
 const show = ref(false);
+const activity = ref(); // 当前活动
+const prizeLevel = ref(); // 抽奖等级
 const prizeScene = ref(PrizeScene.Indoor); // 抽奖场景
 const prizeNum = ref(); // 抽奖人数
-const prizeLevel = ref(); // 抽奖等级
 const prizeInfo = reactive({
   prizeLevel,
   prizeScene,
@@ -135,21 +148,23 @@ const backHome = () => {
 // #endregion
 
 //#region 获取活动二维码
-const qrCodeSrc = ref('');
-const getQrCodeImg = async () => {
-  const activityInfo = await getActivityDetail();
-  if (activityInfo) {
-    qrCodeSrc.value = await getWxQrCodeImg(activityInfo.ticket);
+const qrCodeSrc = ref('https://renmingliang.github.io/vue-lottery/img/QR-code.934f3fae.jpg');
+const onActivityChange = (activityId) => getQrCodeImg(activityId);
+const getQrCodeImg = async (activityId) => {
+  // 1. 活动页需手动存储当前活动的 id
+  wsCache.set(CACHE_KEY.ACTIVITY_ID, activityId);
+  // 2. 获取该活动的 ticket
+  const { ticket } = lotteryStore.getActivityById(activityId);
+  // 3. 获取二维码
+  if (ticket) {
+    qrCodeSrc.value = await getWxQrCodeImg(ticket);
   }
 };
-onBeforeMount(() => {
-  getQrCodeImg();
-});
 //#endregion
 
-// 获取抽奖的等级信息
-const lotteryStore = useLotteryStore();
+// 获取抽奖活动信息
 onBeforeMount(() => {
+  lotteryStore.fetchAllActivities();
   lotteryStore.fetchPrizeLevels();
 });
 </script>

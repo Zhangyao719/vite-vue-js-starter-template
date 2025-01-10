@@ -1,10 +1,11 @@
 // 各类项目相关配置
 import { defineStore } from 'pinia';
 import store from '../index';
-import { getPrizeLevels } from '@/api/lottery';
+import { getPrizeLevels, getAllActivities } from '@/api/lottery';
 
 export const useLotteryStore = defineStore('lottery', {
   state: () => ({
+    activities: [],
     prizeLevels: [],
   }),
   getters: {
@@ -14,8 +15,22 @@ export const useLotteryStore = defineStore('lottery', {
         value: +value,
       }));
     },
+    activityOptions: (state) => {
+      return state.activities.map(({ id, activityName }) => ({
+        label: activityName,
+        value: id,
+      }));
+    },
+    getActivityById: (state) => (id) => {
+      return state.activities.find((item) => item.id === id) || {};
+    },
   },
   actions: {
+    async fetchAllActivities() {
+      if (this.activities.length) return;
+      const data = await getAllActivities();
+      this.activities = data || [];
+    },
     async fetchPrizeLevels() {
       if (this.prizeLevels.length) return;
       const data = await getPrizeLevels();
