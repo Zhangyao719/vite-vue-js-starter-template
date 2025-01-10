@@ -91,7 +91,6 @@ import useMusic from '@/hooks/useMusic';
 import { MusicConfig, PrizeScene } from './constant';
 import { getActivityDetail, getWxQrCodeImg } from '@/api/lottery';
 import { useLotteryStore } from '@/store/modules/lottery';
-import { ACTIVITY_ID } from '@/utils/constant';
 
 defineOptions({
   name: 'ScreenBackground',
@@ -151,7 +150,7 @@ onBeforeMount(() => {
 // 获取抽奖的等级信息
 const lotteryStore = useLotteryStore();
 onBeforeMount(() => {
-  lotteryStore.fetchPrizeLevels(ACTIVITY_ID.YEAR2025);
+  lotteryStore.fetchPrizeLevels();
 });
 </script>
 

@@ -3,7 +3,7 @@ import store from '../index';
 import { getSimpleDictDataList } from '@/api/dict';
 import useCache from '@/utils/storage';
 
-const { wsCache, CACHE_KEY } = useCache('sessionStorage');
+const { wsCache, CACHE_KEY } = useCache();
 
 export const useDictStore = defineStore('dict', {
   state: () => ({

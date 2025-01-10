@@ -36,7 +36,6 @@ import { DialogPlugin } from 'tdesign-vue-next';
 import { authorize, handleUnlogin } from '@/utils/authorize';
 import { signIn } from '@/api/user';
 import useCache from '@/utils/storage';
-import { ACTIVITY_ID } from '@/utils/constant';
 import { formatToDateTime } from '@/utils/date';
 
 defineOptions({
@@ -57,7 +56,7 @@ const handleCommand = async (/* command */) => {
   if (isLogin.value) return;
   loading.value = true;
   try {
-    const info = await signIn(wxCode.value, ACTIVITY_ID.YEAR2025);
+    const info = await signIn(wxCode.value);
     info.createTime = formatToDateTime(info.createTime);
     wsCache.set(CACHE_KEY.USER, info);
     Object.assign(userInfo, info);

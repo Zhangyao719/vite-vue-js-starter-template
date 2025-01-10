@@ -1,4 +1,8 @@
 import { get, post } from '@/utils/request';
+import useCache from '@/utils/storage';
+
+const { wsCache, CACHE_KEY } = useCache();
+const activityId = wsCache.get(CACHE_KEY.ACTIVITY_ID);
 
 /**
  * @description 用户签到
@@ -6,38 +10,34 @@ import { get, post } from '@/utils/request';
  * @param {string | number} activityId 活动id
  * @return {Promise<{nickname: string; headimgurl: string; activityId: number; accessToken: string; refreshToken: string; currentNum: number; createTime: number>}}
  */
-export const signIn = (code, activityId) => post('/prize-draw-user/create', undefined, { code, activityId });
+export const signIn = (code) => post('/prize-draw-user/create', undefined, { code, activityId });
 
 /**
  * @description 获取所有场内签到用户（排除已中奖的用户）
- * @param {number} activityId 活动id
  */
-export const getAllSignInUsers = (activityId) => {
+export const getAllSignInUsers = () => {
   return get('/prize-draw-user/getAllPrizeDraUser', { activityId });
 };
 
 /**
  * @description 随机获取 100 名场外的导入用户（排除已中奖的用户）
- * @param {number} activityId 活动id
  */
-export const getHundredOutdoorUsers = (activityId) => {
+export const getHundredOutdoorUsers = () => {
   return get('/prize-draw-out-user/getRandOutUser', { activityId });
 };
 
 /**
  * @description 获取所有中奖用户
- * @param {number} activityId 活动id
  * @param {number} prizeLevel 奖品等级
  */
-export const getAllWinners = (activityId, prizeLevel) => {
+export const getAllWinners = (prizeLevel) => {
   return get('/prize-draw-user/getAllWinner', { activityId, prizeLevel });
 };
 
 /**
  * @description 获取某个用户的中奖信息
- * @param {number} activityId 活动id
  * @param {number} openId 用户微信的openId
  */
-export const getPrizeInfoByOpenId = (activityId, openId) => {
+export const getPrizeInfoByOpenId = (openId) => {
   return get('/prize-draw-user/checkWinner', { activityId, openId });
 };

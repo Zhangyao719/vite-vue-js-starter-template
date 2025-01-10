@@ -33,7 +33,6 @@ import { ref, inject, computed, toRefs } from 'vue';
 import useMusic from '@/hooks/useMusic';
 import { useUserStore } from '@/store/modules/user.js';
 import { lotteryIndoor, lotteryOutdoor } from '@/api/lottery';
-import { ACTIVITY_ID } from '@/utils/constant';
 import { LotteryConfig, MusicConfig, PrizeScene } from './constant';
 import Start from './components/LotteryStart.vue';
 import LoadingAvatar from './components/LotteryLoadingAvatar.vue';
@@ -88,14 +87,14 @@ const handleClick = async (tab) => {
       try {
         // 先获取抽奖池人员（用于转场过渡）
         if (isIndoor.value) {
-          await userStore.fetchAllSignInUsers(ACTIVITY_ID.YEAR2025);
+          await userStore.fetchAllSignInUsers();
           // 场内抽奖前判断人数是否满足抽奖条件
           if (prizeNum.value > userStore.signInUsersTotal) {
             return MessagePlugin.error('中奖人数不能大于签到人数');
           }
         } else {
           // 场外人数众多，无需校验
-          await userStore.fetchRandomOutdoorUsers(ACTIVITY_ID.YEAR2025);
+          await userStore.fetchRandomOutdoorUsers();
         }
         // 再切换至下一个环节
         activeTab.value = isIndoor.value ? LotteryConfig.LoadingAvatar : LotteryConfig.LoadingBar;
@@ -111,7 +110,6 @@ const handleClick = async (tab) => {
       try {
         // 先获取中奖名单
         const params = {
-          activityId: ACTIVITY_ID.YEAR2025,
           prizePool: prizeLevel.value?.value,
           winNum: prizeNum.value,
         };

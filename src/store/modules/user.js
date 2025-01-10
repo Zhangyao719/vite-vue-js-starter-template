@@ -34,12 +34,12 @@ export const useUserStore = defineStore('user', {
       const endIndex = startIndex + 8;
       return this.randomOutdoorUsers.slice(startIndex, endIndex);
     },
-    async fetchAllSignInUsers(activityId) {
-      const data = await getAllSignInUsers(activityId);
+    async fetchAllSignInUsers() {
+      const data = await getAllSignInUsers();
       this.allSignInUser = data;
     },
-    async fetchRandomOutdoorUsers(activityId) {
-      const data = await getHundredOutdoorUsers(activityId);
+    async fetchRandomOutdoorUsers() {
+      const data = await getHundredOutdoorUsers();
       this.randomOutdoorUsers = data;
     },
   },
