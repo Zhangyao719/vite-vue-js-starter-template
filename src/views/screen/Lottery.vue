@@ -34,6 +34,7 @@ import useMusic from '@/hooks/useMusic';
 import { useUserStore } from '@/store/modules/user.js';
 import { lotteryIndoor, lotteryOutdoor } from '@/api/lottery';
 import { LotteryConfig, MusicConfig, PrizeScene } from './constant';
+import { isNullOrUnDef } from '@/utils/is';
 import Start from './components/LotteryStart.vue';
 import LoadingAvatar from './components/LotteryLoadingAvatar.vue';
 import LoadingBar from './components/LotteryLoadingBar.vue';
@@ -54,15 +55,15 @@ defineOptions({
 const { selectMusic } = useMusic();
 
 const prizeInfo = inject('prizeInfo', {
+  activityId: undefined,
   prizeLevel: {},
-  prizeNum: undefined,
   prizeScene: PrizeScene.Indoor,
+  prizeNum: undefined,
 });
-const { prizeLevel, prizeNum, prizeScene } = toRefs(prizeInfo);
+const { activityId, prizeLevel, prizeNum, prizeScene } = toRefs(prizeInfo);
 
-// 没有选择抽奖等级和中奖人数
 const disabled = computed(() => {
-  return !prizeLevel.value?.label || !prizeNum.value;
+  return isNullOrUnDef(activityId.value) || !prizeLevel.value?.label || !prizeNum.value;
 });
 
 const isIndoor = computed(() => prizeScene.value === PrizeScene.Indoor);

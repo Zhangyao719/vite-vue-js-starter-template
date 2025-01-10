@@ -40,7 +40,7 @@
       <t-button class="mr-4!" @click="router.push({ name: 'Lottery' })"> 大屏抽奖 </t-button>
       <!-- 选择活动 -->
       <t-select
-        v-model="activity"
+        v-model="activityId"
         class="inline-block w-150px! mr-4!"
         placeholder="-选择活动-"
         @change="onActivityChange"
@@ -128,11 +128,12 @@ watch(
 
 // #region 工具栏
 const show = ref(false);
-const activity = ref(); // 当前活动
+const activityId = ref(); // 当前活动
 const prizeLevel = ref(); // 抽奖等级
 const prizeScene = ref(PrizeScene.Indoor); // 抽奖场景
 const prizeNum = ref(); // 抽奖人数
 const prizeInfo = reactive({
+  activityId,
   prizeLevel,
   prizeScene,
   prizeNum,
@@ -149,12 +150,12 @@ const backHome = () => {
 
 //#region 获取活动二维码
 const qrCodeSrc = ref('https://renmingliang.github.io/vue-lottery/img/QR-code.934f3fae.jpg');
-const onActivityChange = (activityId) => getQrCodeImg(activityId);
-const getQrCodeImg = async (activityId) => {
+const onActivityChange = () => getQrCodeImg();
+const getQrCodeImg = async () => {
   // 1. 活动页需手动存储当前活动的 id
-  wsCache.set(CACHE_KEY.ACTIVITY_ID, activityId);
+  wsCache.set(CACHE_KEY.ACTIVITY_ID, activityId.value);
   // 2. 获取该活动的 ticket
-  const { ticket } = lotteryStore.getActivityById(activityId);
+  const { ticket } = lotteryStore.getActivityById(activityId.value);
   // 3. 获取二维码
   if (ticket) {
     qrCodeSrc.value = await getWxQrCodeImg(ticket);
