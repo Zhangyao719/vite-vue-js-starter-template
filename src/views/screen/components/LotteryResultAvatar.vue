@@ -56,12 +56,20 @@
 </template>
 
 <script setup>
-import { ref, inject, defineExpose } from 'vue';
+import { ref, inject, defineExpose, defineProps } from 'vue';
 import { IconFont } from 'tdesign-icons-vue-next';
 import { deleteWinner } from '@/api';
+import { useEmitt } from '@/hooks/useEmitt';
 
 defineOptions({
   name: 'LotteryResultAvatar',
+});
+
+const props = defineProps({
+  isRecordPage: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 const { winningUsers, setWinningUsers } = inject('winningUsers');
@@ -77,14 +85,21 @@ const openPopconfirm = (id) => {
 };
 
 // 删除用户
+const { emitter } = useEmitt();
 const loading = ref(false);
 const onDelete = async (index) => {
   loading.value = true;
   try {
     await deleteWinner(currentUserId.value);
-    // 删除成功，从数组中同步剔除该用户
-    winningUsers.value.splice(index, 1);
-    setWinningUsers(winningUsers.value);
+
+    if (props.isRecordPage) {
+      // 中奖记录页，删除后需要重新获取所有中奖用户
+      emitter.emit('refreshRecord');
+    } else {
+      // 中奖结果页， 删除后直接从数组中同步剔除该用户
+      winningUsers.value.splice(index, 1);
+      setWinningUsers(winningUsers.value);
+    }
   } finally {
     loading.value = false;
     isOpen.value = false;

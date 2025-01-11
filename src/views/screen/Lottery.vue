@@ -18,7 +18,7 @@
     </h3>
 
     <!-- 抽奖部分 -->
-    <component :is="activeTab.component" ref="stepRef"></component>
+    <component :is="activeTab.component" ref="stepRef" :isRecordPage="isRecordPage"></component>
 
     <!-- 操作按钮 -->
     <t-button
@@ -36,7 +36,8 @@
 </template>
 
 <script setup>
-import { ref, shallowRef, inject, computed, toRefs, useTemplateRef, defineExpose } from 'vue';
+import { ref, shallowRef, inject, computed, toRefs, useTemplateRef, defineExpose, watch, watchEffect } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useDebounceFn } from '@vueuse/core';
 import useMusic from '@/hooks/useMusic';
 import { useUserStore } from '@/store/modules/user.js';
@@ -59,6 +60,11 @@ defineOptions({
     ResultBar,
   },
 });
+
+const router = useRouter();
+
+const route = useRoute();
+const isRecordPage = computed(() => route.query.scene === 'record');
 
 const { selectMusic } = useMusic();
 
@@ -93,10 +99,7 @@ const setWinningUsers = (list) => {
   winningUsers.value = list;
 };
 
-const reset = () => {
-  activeTab.value = LotteryConfig.Start;
-  selectMusic(MusicConfig.Start);
-};
+const reset = () => router.replace({ name: 'Lottery' });
 
 const handleClick = useDebounceFn(async (tab) => {
   switch (tab) {
@@ -132,7 +135,8 @@ const handleClick = useDebounceFn(async (tab) => {
           prizePool: prizeLevel.value?.value,
           winNum: prizeNum.value,
         };
-        winningUsers.value = await (isIndoor.value ? lotteryIndoor(params) : lotteryOutdoor(params));
+        const data = await (isIndoor.value ? lotteryIndoor(params) : lotteryOutdoor(params));
+        setWinningUsers(data);
         // 再切换至下一个环节
         activeTab.value = isIndoor.value ? LotteryConfig.ResultAvatar : LotteryConfig.ResultBar;
         selectMusic(MusicConfig.Result);
@@ -161,9 +165,34 @@ defineExpose({
 });
 // #endregion
 
-onMounted(() => {
-  selectMusic(MusicConfig.Start);
-});
+//#region 中奖记录页的逻辑：
+const winnerReocrd = inject('winnerReocrd', {});
+// watchEffect(() => {
+//   console.log('🚀 ~ winnerReocrd:', winnerReocrd);
+//   // setWinningUsers(record.value); // 获取中奖记录
+// });
+watch(
+  () => winnerReocrd.recordList,
+  (qa) => {
+    console.log('🚀 ~ qa:', qa);
+  },
+);
+watch(
+  isRecordPage,
+  (bool) => {
+    if (bool) {
+      // 中奖记录页（直接带着记录去结果组件）
+      // activeTab.value = indoorBool ? LotteryConfig.ResultAvatar : LotteryConfig.ResultBar;
+      selectMusic(MusicConfig.Result);
+    } else {
+      // 抽奖页
+      activeTab.value = LotteryConfig.Start;
+      selectMusic(MusicConfig.Start);
+    }
+  },
+  { immediate: true },
+);
+//#endregion
 </script>
 
 <style scoped lang="less">

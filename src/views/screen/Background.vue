@@ -66,6 +66,7 @@
         label="中奖人数"
       />
       <t-button class="mr-4!" @click="startLottery"> 大屏抽奖 </t-button>
+      <t-button :loading="loading" :disabled="disabled" @click="openRecord"> 中奖记录 </t-button>
     </t-drawer>
 
     <!-- 活动二维码 -->
@@ -108,14 +109,17 @@
 </template>
 
 <script setup>
-import { ref, provide, readonly, watch, onBeforeMount, useTemplateRef } from 'vue';
+import { ref, provide, readonly, computed, watch, onBeforeMount, useTemplateRef, shallowRef } from 'vue';
 import { useRouter } from 'vue-router';
 import { IconFont } from 'tdesign-icons-vue-next';
 import useMusic from '@/hooks/useMusic';
 import { MusicConfig, PrizeScene } from './constant';
 import { useLotteryStore } from '@/store/modules/lottery';
+import { getAllIndoorWinners, getAllOutdoorWinners } from '@/api';
 import useCache from '@/utils/storage';
 import { WX_QRCODE_HREF } from '@/utils/constant';
+import { isNullOrUnDef } from '@/utils/is';
+import { useEmitt } from '@/hooks/useEmitt';
 
 defineOptions({
   name: 'ScreenBackground',
@@ -165,10 +169,48 @@ const backHome = () => {
 // 开始大屏抽奖
 const lotteryRef = useTemplateRef('lotteryRef');
 const startLottery = () => {
+  selectMusic(MusicConfig.Start);
   if (lotteryRef.value?.resetLottery) lotteryRef.value?.resetLottery();
   router.push({ name: 'Lottery' });
   show.value = false;
 };
+
+// 查询中奖记录
+const loading = ref(false);
+const disabled = computed(() => {
+  return isNullOrUnDef(activityId.value) || isNullOrUnDef(prizeLevel.value);
+});
+const recordList = shallowRef([]);
+const currentPrizeScene = ref(PrizeScene.Indoor); // 当前查询的中奖记录是场内还是场外（指在查询记录那一刻的场景）
+const winnerReocrd = reactive({
+  recordList,
+  currentPrizeScene,
+});
+const openRecord = () => {
+  selectMusic(MusicConfig.Bgm);
+  currentPrizeScene.value = prizeScene.value;
+  queryWinnerRecord();
+};
+// 查询中奖记录
+const queryWinnerRecord = async () => {
+  loading.value = true;
+  try {
+    const data = await (prizeScene.value === PrizeScene.Indoor
+      ? getAllIndoorWinners(prizeLevel.value?.value)
+      : getAllOutdoorWinners(prizeLevel.value?.value));
+    recordList.value = data || [];
+    router.push({ name: 'Lottery', query: { scene: 'record' } });
+  } finally {
+    loading.value = false;
+    show.value = false;
+  }
+};
+// 将中奖信息传递给记录页
+provide('winnerReocrd', readonly(winnerReocrd));
+
+// 供其他页面调用，用于刷新中奖记录
+const { emitter } = useEmitt();
+emitter.on('refreshRecord', queryWinnerRecord);
 // #endregion
 
 //#region 获取活动二维码
