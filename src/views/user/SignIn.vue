@@ -1,9 +1,16 @@
 <template>
   <div id="user-wrapper" class="w-full h-full relative">
     <!-- eslint-disable-next-line -->
-    <t-loading :loading="loading" attach="#user-wrapper" size="1.5rem" style="
+    <t-loading
+      :loading="loading"
+      attach="#user-wrapper"
+      size="1.5rem"
+      style="
 
---td-brand-color: #fedc83" />
+--td-brand-color: #fedc83;
+
+ background-color: transparent"
+    />
     <!-- 用户信息 -->
     <div class="w-full h-1/2 flex-center flex-col">
       <t-avatar :image="userInfo.headimgurl" size="3.5rem" />
