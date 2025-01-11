@@ -13,11 +13,8 @@
       <h1 class="text-6vh text-#fff176 font-bold">（南通站）</h1>
     </div>
 
-    <footer class="text-#fff176 absolute bottom-12vh left-1/2 transform -translate-x-1/2">
-      <p class="text-5vh">
-        <img class="align-middle w-5vh" src="@/assets/imgs/logo.png" height="auto" alt="" />
-        恒科信息部
-      </p>
+    <footer class="text-white fixed bottom-12vh left-1/2 transform -translate-x-1/2 select-none tracking-1">
+      <p class="text-3vh">本系统由恒科信息部技术开发</p>
     </footer>
 
     <div class="left-icon absolute left-5% bottom-8% w-20%">

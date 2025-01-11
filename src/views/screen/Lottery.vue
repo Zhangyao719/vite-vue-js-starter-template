@@ -10,6 +10,13 @@
       alt=""
     />
 
+    <h3
+      class="text-#F3F586 text-2vh fixed font-bold top-32% right-3% select-none tracking-1 p-4 bg-black/45 rounded-2xl"
+      style="writing-mode: vertical-rl; text-orientation: upright"
+    >
+      恒科信息部技术开发
+    </h3>
+
     <!-- 抽奖部分 -->
     <component :is="activeTab.component" ref="stepRef"></component>
 
