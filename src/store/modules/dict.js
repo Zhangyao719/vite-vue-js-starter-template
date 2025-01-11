@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import store from '../index';
-import { getSimpleDictDataList } from '@/api/dict';
+import { getSimpleDictDataList } from '@/api';
 import useCache from '@/utils/storage';
 
 const { wsCache, CACHE_KEY } = useCache();

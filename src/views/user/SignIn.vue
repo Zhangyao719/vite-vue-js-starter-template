@@ -34,7 +34,7 @@ import { onBeforeMount, ref, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { DialogPlugin } from 'tdesign-vue-next';
 import { authorize, handleUnlogin } from '@/utils/authorize';
-import { signIn } from '@/api/user';
+import { signIn } from '@/api';
 import useCache from '@/utils/storage';
 import { formatToDateTime } from '@/utils/date';
 

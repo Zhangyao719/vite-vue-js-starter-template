@@ -1,4 +1,4 @@
-import { get } from '@/utils/request';
+import { get, post } from '@/utils/request';
 import useCache from '@/utils/storage';
 
 const { wsCache, CACHE_KEY } = useCache();
@@ -27,6 +27,36 @@ export const getPrizeLevels = () => {
 };
 
 /**
+ * @description 获取所有场内签到用户（排除已中奖的用户）
+ */
+export const getAllSignInUsers = () => {
+  return get('/prize-draw-user/getAllPrizeDraUser', { activityId: wsCache.get(CACHE_KEY.ACTIVITY_ID) });
+};
+
+/**
+ * @description 随机获取 100 名场外的导入用户（排除已中奖的用户）
+ */
+export const getHundredOutdoorUsers = () => {
+  return get('/prize-draw-out-user/getRandOutUser', { activityId: wsCache.get(CACHE_KEY.ACTIVITY_ID) });
+};
+
+/**
+ * @description 获取所有场内中奖用户
+ * @param {number} prizeLevel 奖品等级
+ */
+export const getAllIndoorWinners = (prizeLevel) => {
+  return get('/prize-draw-user/getAllWinner', { activityId: wsCache.get(CACHE_KEY.ACTIVITY_ID), prizeLevel });
+};
+
+/**
+ * @description 获取所有场外中奖用户
+ * @param {number} prizeLevel 奖品等级
+ */
+export const getAllOutdoorWinners = (prizeLevel) => {
+  return get('/prize-draw-out-user/getAllWinner', { activityId: wsCache.get(CACHE_KEY.ACTIVITY_ID), prizeLevel });
+};
+
+/**
  * @description 场内抽奖
  * @param {Record<'winNum'|'prizePool', number>} params
  */
@@ -41,3 +71,8 @@ export const lotteryIndoor = (params) => {
 export const lotteryOutdoor = (params) => {
   return get('/prize-draw-out-user/prizeDraw', { ...params, activityId: wsCache.get(CACHE_KEY.ACTIVITY_ID) });
 };
+
+/**
+ * @description 删除场内某个中奖人
+ */
+export const deleteWinner = (userId) => post('/prize-draw-user/deleteWinner', undefined, { userId });

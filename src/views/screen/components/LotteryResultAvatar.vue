@@ -14,9 +14,13 @@
   </div>
 
   <!-- 中奖名单 -->
-  <div class="zoom-in-down h-55vh mx-5% py-3vh bg-black/15 overflow-y-auto scrollbar">
-    <ul class="flex justify-evenly items-center flex-wrap gap-2vh min-h-full">
-      <li v-for="user in winningUsers" :key="user.openid" class="flex-shrink-0 flex-basis-13vh">
+  <div class="zoom-in-down h-55vh mx-10% py-3vh bg-black/15 overflow-y-auto scrollbar">
+    <ul class="flex justify-evenly items-center flex-wrap gap-2vh min-h-full select-none">
+      <li
+        v-for="(user, index) in winningUsers"
+        :key="user.id"
+        class="avatar-item flex-shrink-0 flex-basis-13vh relative"
+      >
         <!-- 头像 -->
         <div
           class="bg-no-repeat bg-cover bg-center rounded-1/2 overflow-hidden w-full"
@@ -30,19 +34,68 @@
           />
         </div>
         <span class="text-#fff176 text-sm font-bold">{{ user.nickname || '' }}</span>
+        <!-- 删除 -->
+        <t-popconfirm
+          :popupProps="{ visible: isOpen && currentUserId === user.id }"
+          content="确认删除（无法恢复）？"
+          theme="danger"
+          @cancel="isOpen = false"
+        >
+          <icon-font
+            name="close-circle"
+            class="close-icon absolute top-0 right-0 hover:cursor-pointer color-white invisible"
+            @click="openPopconfirm(user.id)"
+          />
+          <template #confirmBtn>
+            <t-button size="small" style="margin-left: 1rem" :loading="loading" @click="onDelete(index)">确定</t-button>
+          </template>
+        </t-popconfirm>
       </li>
     </ul>
   </div>
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { ref, inject, defineExpose } from 'vue';
+import { IconFont } from 'tdesign-icons-vue-next';
+import { deleteWinner } from '@/api';
 
 defineOptions({
   name: 'LotteryResultAvatar',
 });
 
 const { winningUsers, setWinningUsers } = inject('winningUsers');
+
+//#region 删除中奖用户
+const isOpen = ref(false);
+const currentUserId = ref();
+
+// 打开删除弹窗
+const openPopconfirm = (id) => {
+  currentUserId.value = id;
+  isOpen.value = true;
+};
+
+// 删除用户
+const loading = ref(false);
+const onDelete = async (index) => {
+  loading.value = true;
+  try {
+    await deleteWinner(currentUserId.value);
+    // 删除成功，从数组中同步剔除该用户
+    winningUsers.value.splice(index, 1);
+    setWinningUsers(winningUsers.value);
+  } finally {
+    loading.value = false;
+    isOpen.value = false;
+  }
+};
+
+// 暴露删除 loading（当用户删除中，底部操作按钮需要禁用）
+defineExpose({
+  deleteLoading: loading,
+});
+//#endregion
 </script>
 
 <style scoped lang="less">
@@ -54,7 +107,15 @@ const { winningUsers, setWinningUsers } = inject('winningUsers');
   animation-duration: 1s;
 }
 
-.avatar-rotate {
-  animation: rotate 5s linear infinite;
+.avatar-item {
+  &:hover {
+    .close-icon {
+      visibility: visible;
+    }
+  }
+
+  .avatar-rotate {
+    animation: rotate 5s linear infinite;
+  }
 }
 </style>

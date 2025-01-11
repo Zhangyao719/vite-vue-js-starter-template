@@ -14,7 +14,7 @@
   </div>
 
   <!-- 中奖名单 -->
-  <div class="zoom-in-down h-55vh mx-8% py-3vh bg-black/15 overflow-y-auto scrollbar">
+  <div class="zoom-in-down h-55vh mx-10% py-3vh bg-black/15 overflow-y-auto scrollbar">
     <ul class="flex justify-evenly items-center flex-wrap gap-row-1vh min-h-full">
       <li
         v-for="user in winningUsers"

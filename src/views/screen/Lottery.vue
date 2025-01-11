@@ -11,7 +11,7 @@
     />
 
     <!-- 抽奖部分 -->
-    <component :is="activeTab.component"></component>
+    <component :is="activeTab.component" ref="stepRef"></component>
 
     <!-- 操作按钮 -->
     <t-button
@@ -29,11 +29,11 @@
 </template>
 
 <script setup>
-import { ref, inject, computed, toRefs, defineExpose } from 'vue';
+import { ref, shallowRef, inject, computed, toRefs, useTemplateRef, defineExpose } from 'vue';
 import { useDebounceFn } from '@vueuse/core';
 import useMusic from '@/hooks/useMusic';
 import { useUserStore } from '@/store/modules/user.js';
-import { lotteryIndoor, lotteryOutdoor } from '@/api/lottery';
+import { lotteryIndoor, lotteryOutdoor } from '@/api';
 import { LotteryConfig, MusicConfig, PrizeScene } from './constant';
 import { isNullOrUnDef } from '@/utils/is';
 import Start from './components/LotteryStart.vue';
@@ -55,6 +55,8 @@ defineOptions({
 
 const { selectMusic } = useMusic();
 
+const stepRef = useTemplateRef('stepRef');
+
 const prizeInfo = inject('prizeInfo', {
   activityId: undefined,
   prizeLevel: {},
@@ -64,7 +66,12 @@ const prizeInfo = inject('prizeInfo', {
 const { activityId, prizeLevel, prizeNum, prizeScene } = toRefs(prizeInfo);
 
 const disabled = computed(() => {
-  return isNullOrUnDef(activityId.value) || !prizeLevel.value?.label || !prizeNum.value;
+  if (stepRef.value && 'deleteLoading' in stepRef.value) {
+    // 在 result 页面中进行删除操作时，禁用按钮
+    return stepRef.value.deleteLoading;
+  } else {
+    return isNullOrUnDef(activityId.value) || !prizeLevel.value?.label || !prizeNum.value;
+  }
 });
 
 const isIndoor = computed(() => prizeScene.value === PrizeScene.Indoor);
@@ -73,7 +80,7 @@ const isIndoor = computed(() => prizeScene.value === PrizeScene.Indoor);
 const userStore = useUserStore();
 const activeTab = ref(LotteryConfig.Start);
 const loading = ref(false);
-const winningUsers = ref([]); // 中奖名单
+const winningUsers = shallowRef([]); // 中奖名单
 
 const setWinningUsers = (list) => {
   winningUsers.value = list;

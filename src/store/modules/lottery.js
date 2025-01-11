@@ -1,7 +1,7 @@
 // 各类项目相关配置
 import { defineStore } from 'pinia';
 import store from '../index';
-import { getPrizeLevels, getAllActivities } from '@/api/lottery';
+import { getPrizeLevels, getAllActivities } from '@/api';
 
 export const useLotteryStore = defineStore('lottery', {
   state: () => ({

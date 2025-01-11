@@ -1,7 +1,7 @@
 // 各类项目相关配置
 import { defineStore } from 'pinia';
 import store from '../index';
-import { getAllSignInUsers, getHundredOutdoorUsers } from '@/api/user';
+import { getAllSignInUsers, getHundredOutdoorUsers } from '@/api';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
