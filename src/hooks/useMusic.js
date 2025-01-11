@@ -19,8 +19,18 @@ const useMusic = () => {
   });
 
   // 切换音乐播放状态
-  const toggleMusic = () => {
-    musicState.value = !musicState.value;
+  const toggleMusic = (state) => {
+    switch (state) {
+      case 'play':
+        musicState.value = true;
+        break;
+      case 'pause':
+        musicState.value = false;
+        break;
+      default:
+        musicState.value = !musicState.value;
+        break;
+    }
     if (musicState.value) {
       musicRef.value && musicRef.value.play();
     } else {

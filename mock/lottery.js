@@ -114,6 +114,7 @@ export default [
       return {
         code: 0,
         data: Array.from({ length: 100 }).map((_, index) => ({
+          id: index + 1,
           workNum: '10205891',
           nickname: '撒大萨达' + index,
           dept: '' + index,
@@ -125,14 +126,22 @@ export default [
   {
     url: '/prize-draw-out-user/getAllWinner',
     method: 'get',
-    response: () => {
+    response: ({ query }) => {
       return {
         code: 0,
-        data: Array.from({ length: 5 }).map((_, index) => ({
-          workNum: '10205891',
-          nickname: '撒贝宁杀乌鸡' + index,
-          dept: '恒科指挥部安全中心' + index,
-        })),
+        data:
+          // prettier-ignore
+          query.prizeLevel === '1'
+            ? Array.from({ length: 3 }).map((_, index) => ({
+              workNum: '10205891',
+              nickname: '撒贝宁杀乌鸡' + index,
+              dept: '恒科指挥部安全中心' + index,
+            }))
+            : Array.from({ length: 3 }).map((_, index) => ({
+              workNum: '10205892',
+              nickname: '我尼玛爱嫂子' + index,
+              dept: '康辉啊省点钱阿' + index,
+            })),
       };
     },
   },

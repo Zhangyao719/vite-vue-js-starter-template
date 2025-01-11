@@ -187,9 +187,16 @@ const winnerReocrd = reactive({
   currentPrizeScene,
 });
 const openRecord = () => {
-  selectMusic(MusicConfig.Bgm);
+  // 切换中奖音乐
+  if (musicConfig.value.src !== MusicConfig.Result) {
+    selectMusic(MusicConfig.Result);
+  }
+  toggleMusic('play');
+  // 记录当前场景，查询中奖记录
   currentPrizeScene.value = prizeScene.value;
-  queryWinnerRecord();
+  queryWinnerRecord().then(() => {
+    router.push({ name: 'Lottery', query: { scene: 'record' } });
+  });
 };
 // 查询中奖记录
 const queryWinnerRecord = async () => {
@@ -199,7 +206,6 @@ const queryWinnerRecord = async () => {
       ? getAllIndoorWinners(prizeLevel.value?.value)
       : getAllOutdoorWinners(prizeLevel.value?.value));
     recordList.value = data || [];
-    router.push({ name: 'Lottery', query: { scene: 'record' } });
   } finally {
     loading.value = false;
     show.value = false;

@@ -36,8 +36,8 @@
 </template>
 
 <script setup>
-import { ref, shallowRef, inject, computed, toRefs, useTemplateRef, defineExpose, watch, watchEffect } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, shallowRef, inject, computed, toRefs, useTemplateRef, defineExpose, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { useDebounceFn } from '@vueuse/core';
 import useMusic from '@/hooks/useMusic';
 import { useUserStore } from '@/store/modules/user.js';
@@ -61,8 +61,6 @@ defineOptions({
   },
 });
 
-const router = useRouter();
-
 const route = useRoute();
 const isRecordPage = computed(() => route.query.scene === 'record');
 
@@ -82,7 +80,11 @@ const disabled = computed(() => {
   if (stepRef.value && 'deleteLoading' in stepRef.value) {
     // 在 result 页面中进行删除操作时，禁用按钮
     return stepRef.value.deleteLoading;
+  } else if (isRecordPage.value) {
+    // 中奖记录页，无需禁用
+    return false;
   } else {
+    // 抽奖页面，判断是否满足抽奖条件
     return isNullOrUnDef(activityId.value) || !prizeLevel.value?.label || !prizeNum.value;
   }
 });
@@ -99,7 +101,11 @@ const setWinningUsers = (list) => {
   winningUsers.value = list;
 };
 
-const reset = () => router.replace({ name: 'Lottery' });
+const reset = () => {
+  activeTab.value = LotteryConfig.Start;
+  selectMusic(MusicConfig.Start);
+  setWinningUsers([]);
+};
 
 const handleClick = useDebounceFn(async (tab) => {
   switch (tab) {
@@ -165,24 +171,27 @@ defineExpose({
 });
 // #endregion
 
-//#region 中奖记录页的逻辑：
+//#region 中奖记录页的逻辑（目前抽奖页面和中奖记录页共用，后期需要单独提取出来）：
 const winnerReocrd = inject('winnerReocrd', {});
-// watchEffect(() => {
-//   console.log('🚀 ~ winnerReocrd:', winnerReocrd);
-//   // setWinningUsers(record.value); // 获取中奖记录
-// });
+const setResultComponent = () => {
+  activeTab.value =
+    winnerReocrd.currentPrizeScene === PrizeScene.Outdoor ? LotteryConfig.ResultBar : LotteryConfig.ResultAvatar;
+};
+// 监听中奖记录变化，保存记录并更改对应（场内或场外）组件：
 watch(
   () => winnerReocrd.recordList,
-  (qa) => {
-    console.log('🚀 ~ qa:', qa);
+  (newList) => {
+    setWinningUsers(newList);
+    setResultComponent();
   },
 );
+// 监听路由变化，更改对应组件：
 watch(
   isRecordPage,
   (bool) => {
     if (bool) {
       // 中奖记录页（直接带着记录去结果组件）
-      // activeTab.value = indoorBool ? LotteryConfig.ResultAvatar : LotteryConfig.ResultBar;
+      setResultComponent();
       selectMusic(MusicConfig.Result);
     } else {
       // 抽奖页
