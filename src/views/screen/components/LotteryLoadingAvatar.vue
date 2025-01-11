@@ -1,7 +1,7 @@
 <template>
   <ul class="pool grid grid-cols-10 px-5% h-52vh">
     <!-- 过渡效果，固定 30 个位置 -->
-    <li v-for="(user, index) in pool" :key="index" class="inline-flex flex-col justify-center items-center">
+    <li v-for="user in pool" :key="user.openid" class="inline-flex flex-col justify-center items-center">
       <div class="avatar w-12vh h-12vh relative">
         <img class="absolute-center object-fill w-90% h-90% rounded-50%" :src="user.headimgurl" alt="" />
       </div>

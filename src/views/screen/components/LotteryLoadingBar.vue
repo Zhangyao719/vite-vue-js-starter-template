@@ -1,8 +1,8 @@
 <template>
   <ul class="w-60% m-[0_auto] gap-col-4">
     <li
-      v-for="(user, index) in pool"
-      :key="index"
+      v-for="user in pool"
+      :key="user.workNum"
       class="bar first:mt-0 h-7vh line-height-7vh bg-[length:100%_100%] bg-no-repeat flex justify-around text-3.6vh mt-0.5% px-5%"
     >
       <span class="w-33.3% font-bold">{{ user.nickname }}</span>

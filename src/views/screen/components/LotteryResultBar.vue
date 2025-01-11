@@ -14,11 +14,11 @@
   </div>
 
   <!-- 中奖名单 -->
-  <div class="zoom-in-down h-55vh mx-5% py-3vh bg-black/15 overflow-y-auto scrollbar">
-    <ul class="flex justify-evenly items-center flex-wrap gap-1vh min-h-full">
+  <div class="zoom-in-down h-55vh mx-8% py-3vh bg-black/15 overflow-y-auto scrollbar">
+    <ul class="flex justify-evenly items-center flex-wrap gap-row-1vh min-h-full">
       <li
-        v-for="(user, index) in winningUsers"
-        :key="index"
+        v-for="user in winningUsers"
+        :key="user.workNum"
         class="bar flex-shrink-1 flex-basis-43% h-8vh line-height-8vh bg-[length:100%_100%] bg-no-repeat flex justify-around text-3.5vh"
       >
         <span class="w-33.3% font-bold">{{ user.nickname }}</span>
