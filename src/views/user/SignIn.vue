@@ -1,5 +1,6 @@
 <template>
   <div id="user-wrapper" class="w-full h-full relative">
+    <!-- eslint-disable-next-line -->
     <t-loading :loading="loading" attach="#user-wrapper" size="1.5rem" style="
 
 --td-brand-color: #fedc83" />
@@ -17,12 +18,19 @@
       </div>
     </div>
 
-    <!-- 操作栏（后续有新增，可以使用 grid 布局） -->
-    <div class="w-full h-1/2 absolute bottom-0 px-3 pb-3">
-      <div class="mx-auto w-15 h-15 bg-gray-950/30 rounded text-center pt-2" @click="handleCommand">
-        <img class="w-1/2" src="@/assets/imgs/button.png" alt="" />
+    <!-- 操作栏 -->
+    <div class="w-full h-1/2 absolute bottom-0 px-3 pb-3 flex justify-center gap-4">
+      <div
+        v-for="item in OPERATIONS"
+        :key="item.value"
+        class="w-15 h-15 bg-gray-950/30 rounded text-center p-2"
+        @click="handleCommand(item.value)"
+      >
+        <div class="icon w-70% h-70% m-[0_auto] relative">
+          <icon-font :name="item.icon" size="1rem" class="absolute-center" style="color: #fedc83"></icon-font>
+        </div>
         <span class="block mt-1 text-#FEDC83">
-          {{ isLogin ? '已签到' : '签到' }}
+          {{ item.label }}
         </span>
       </div>
     </div>
@@ -32,11 +40,13 @@
 <script setup>
 import { onBeforeMount, ref, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { DialogPlugin } from 'tdesign-vue-next';
+import { DialogPlugin, MessagePlugin } from 'tdesign-vue-next';
+import { IconFont } from 'tdesign-icons-vue-next';
 import { authorize, handleUnlogin } from '@/utils/authorize';
-import { signIn } from '@/api';
+import { signIn, getPrizeInfoByOpenId } from '@/api';
 import useCache from '@/utils/storage';
 import { formatToDateTime } from '@/utils/date';
+import { OPERATIONS } from './config';
 
 defineOptions({
   name: 'SignIn', // 签到即登录
@@ -52,28 +62,59 @@ const isLogin = computed(() => !!userInfo.accessToken);
 //#region 操作栏
 const wxCode = ref('');
 const loading = ref(false);
-const handleCommand = async (/* command */) => {
-  if (isLogin.value) return;
-  loading.value = true;
-  try {
-    const info = await signIn(wxCode.value);
-    info.createTime = formatToDateTime(info.createTime);
-    wsCache.set(CACHE_KEY.USER, info);
-    Object.assign(userInfo, info);
-  } catch (err) {
-    DialogPlugin.alert({
-      width: '70%',
-      header: '系统提示',
-      body: '签到失败，请重新授权登录。',
-      closeBtn: false,
-      closeOnOverlayClick: false,
-      closeOnEscKeydown: false,
-      onConfirm() {
-        handleUnlogin();
-      },
-    });
-  } finally {
-    loading.value = false;
+const handleCommand = async (command) => {
+  switch (command) {
+    case 'signIn':
+      {
+        if (isLogin.value) return MessagePlugin.info('您已签到啦~');
+        loading.value = true;
+        try {
+          const info = await signIn(wxCode.value);
+          info.createTime = formatToDateTime(info.createTime);
+          wsCache.set(CACHE_KEY.USER, info);
+          Object.assign(userInfo, info);
+        } catch (err) {
+          DialogPlugin.alert({
+            width: '70%',
+            header: '系统提示',
+            body: '签到失败，请重新授权登录。',
+            closeBtn: false,
+            closeOnOverlayClick: false,
+            closeOnEscKeydown: false,
+            onConfirm() {
+              handleUnlogin();
+            },
+          });
+        } finally {
+          loading.value = false;
+        }
+      }
+      break;
+    case 'winRecord':
+      {
+        if (!isLogin.value) return MessagePlugin.info('您还没有登录哦~');
+        loading.value = true;
+        try {
+          const record = await getPrizeInfoByOpenId(userInfo.openId);
+          console.log('🚀 ~ record:', record);
+          DialogPlugin.alert({
+            width: '70%',
+            header: '系统提示',
+            body: '签到失败，请重新授权登录。',
+            closeBtn: false,
+            closeOnOverlayClick: false,
+            closeOnEscKeydown: false,
+            onConfirm() {
+              handleUnlogin();
+            },
+          });
+        } finally {
+          loading.value = false;
+        }
+      }
+      break;
+    default:
+      break;
   }
 };
 //#endregion
@@ -106,5 +147,12 @@ onBeforeMount(() => {
 #user-wrapper {
   background-image: url('../../../src/assets/imgs/bgi.png');
   background-size: cover;
+}
+
+.icon {
+  background-image: url('../../../src/assets/imgs/button.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 </style>
