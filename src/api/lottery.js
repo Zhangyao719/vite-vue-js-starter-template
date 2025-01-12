@@ -76,3 +76,17 @@ export const lotteryOutdoor = (params) => {
  * @description 删除场内某个中奖人
  */
 export const deleteWinner = (userId) => post('/prize-draw-user/deleteWinner', undefined, { userId });
+
+/**
+ * @description 查询场内签到人数
+ */
+export const getSignInNum = () => {
+  return get('/prize-draw-user/getPrizeDrawUserCount', { activityId: wsCache.get(CACHE_KEY.ACTIVITY_ID) });
+};
+
+/**
+ * @description 查询场外参与人数
+ */
+export const getOutdoorNum = () => {
+  return get('/prize-draw-out-user/getPrizeDrawOutUserCount', { activityId: wsCache.get(CACHE_KEY.ACTIVITY_ID) });
+};

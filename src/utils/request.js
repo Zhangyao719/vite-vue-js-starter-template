@@ -30,7 +30,7 @@ instance.interceptors.response.use(
     switch (code) {
       case 0:
         // 项目后端返回成功
-        return data.data || {};
+        return data.data;
       case 200:
         // 其他服务器返回成功
         return data;

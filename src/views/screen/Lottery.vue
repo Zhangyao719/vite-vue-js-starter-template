@@ -1,8 +1,7 @@
 <template>
   <section class="h-full text-center relative">
     <span class="absolute text-#fff176 text-2vw font-bold left-1/2 -translate-x-1/2 tracking-2">
-      {{ prizeLevel?.label ?? '' }} —
-      {{ PrizeScene[prizeScene] }}
+      {{ isRecordPage ? '中奖名单' : `${prizeLevel?.label ?? ''} — ${PrizeScene[prizeScene]}` }}
     </span>
     <img
       class="mb-3vh"
@@ -11,10 +10,15 @@
     />
 
     <h3
-      class="text-#F3F586 text-2vh fixed font-bold top-32% right-3% select-none tracking-1 p-4 bg-black/45 rounded-2xl"
+      class="text-#F3F586 text-2vh fixed font-bold top-32% left-2.5% select-none tracking-1 p-4 bg-black/45 rounded-2xl"
       style="writing-mode: vertical-rl; text-orientation: upright"
     >
       恒科信息部技术开发
+    </h3>
+
+    <h3 class="text-#F3F586 text-2vh fixed font-bold top-5% right-2.5% select-none p-4 bg-black/60 rounded-2xl">
+      <span class="tracking-1"> {{ isIndoor ? '签到' : '参与' }}人数： </span>
+      {{ total }}
     </h3>
 
     <!-- 抽奖部分 -->
@@ -36,12 +40,23 @@
 </template>
 
 <script setup>
-import { ref, shallowRef, inject, computed, toRefs, useTemplateRef, defineExpose, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import {
+  ref,
+  shallowRef,
+  inject,
+  computed,
+  toRefs,
+  useTemplateRef,
+  defineExpose,
+  watch,
+  onBeforeMount,
+  onBeforeUnmount,
+} from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useDebounceFn } from '@vueuse/core';
 import useMusic from '@/hooks/useMusic';
 import { useUserStore } from '@/store/modules/user.js';
-import { lotteryIndoor, lotteryOutdoor } from '@/api';
+import { lotteryIndoor, lotteryOutdoor, getSignInNum, getOutdoorNum } from '@/api';
 import { LotteryConfig, MusicConfig, PrizeScene } from './constant';
 import { isNullOrUnDef } from '@/utils/is';
 import Start from './components/LotteryStart.vue';
@@ -62,6 +77,7 @@ defineOptions({
 });
 
 const route = useRoute();
+const router = useRouter();
 const isRecordPage = computed(() => route.query.scene === 'record');
 
 const { selectMusic } = useMusic();
@@ -155,7 +171,11 @@ const handleClick = useDebounceFn(async (tab) => {
     case LotteryConfig.ResultAvatar.component:
     case LotteryConfig.ResultBar.component:
       // 3. 抽奖结果 → 返回开始抽奖
-      reset();
+      if (isRecordPage.value) {
+        router.push({ name: 'Lottery' });
+      } else {
+        reset();
+      }
       break;
     default:
       break;
@@ -170,6 +190,38 @@ defineExpose({
   resetLottery: reset,
 });
 // #endregion
+
+//#region 获取抽奖总人数
+const total = ref(0);
+const timer = ref(null);
+
+const queryPeopleTotal = async () => {
+  const num = await (isIndoor.value ? getSignInNum() : getOutdoorNum());
+  total.value = num || 0;
+};
+
+const clearPolling = () => {
+  if (timer.value) clearInterval(timer.value);
+};
+
+const pollingTotal = () => {
+  clearPolling();
+  queryPeopleTotal();
+  timer.value = setInterval(queryPeopleTotal, 1000 * 60 * 5);
+};
+
+watch([activityId, prizeScene], () => {
+  pollingTotal();
+});
+
+onBeforeMount(() => {
+  pollingTotal();
+});
+
+onBeforeUnmount(() => {
+  clearPolling();
+});
+//#endregion
 
 //#region 中奖记录页的逻辑（目前抽奖页面和中奖记录页共用，后期需要单独提取出来）：
 const winnerReocrd = inject('winnerReocrd', {});
