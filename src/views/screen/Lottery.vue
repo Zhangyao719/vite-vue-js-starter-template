@@ -10,8 +10,8 @@
     />
 
     <h3
-      class="text-#F3F586 text-2vh fixed font-bold top-32% left-2.5% select-none tracking-1 p-4 bg-black/45 rounded-2xl"
-      style="writing-mode: vertical-rl; text-orientation: upright"
+      class="text-white text-2vh fixed font-bold top-7% left-7% select-none tracking-1"
+      style="-webkit-text-stroke: 0.2px black"
     >
       恒科信息部技术开发
     </h3>
