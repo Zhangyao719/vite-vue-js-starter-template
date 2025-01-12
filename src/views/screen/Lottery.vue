@@ -28,7 +28,7 @@
     <t-button
       :loading="loading"
       block
-      class="operation w-15vw! absolute! bottom-12vh left-1/2 -translate-x-1/2"
+      class="operation w-15vw! absolute! bottom-7vh left-1/2 -translate-x-1/2"
       shape="round"
       size="large"
       :disabled="disabled"

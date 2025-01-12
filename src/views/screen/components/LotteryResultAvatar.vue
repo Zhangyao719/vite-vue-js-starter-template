@@ -14,12 +14,12 @@
   </div>
 
   <!-- 中奖名单 -->
-  <div class="zoom-in-down h-55vh mx-10% py-3vh bg-black/15 overflow-y-auto scrollbar">
+  <div class="zoom-in-down h-65vh mx-10% py-3vh bg-black/15 overflow-y-auto scrollbar">
     <ul class="flex justify-evenly items-center flex-wrap gap-2vh min-h-full select-none">
       <li
         v-for="(user, index) in winningUsers"
         :key="user.id"
-        class="avatar-item flex-shrink-0 flex-basis-13vh relative"
+        class="avatar-item flex-shrink-0 flex-basis-12vh relative"
       >
         <!-- 头像 -->
         <div
