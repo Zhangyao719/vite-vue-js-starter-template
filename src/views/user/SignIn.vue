@@ -62,7 +62,7 @@ defineOptions({
 
 const route = useRoute();
 
-const { wsCache, CACHE_KEY } = useCache();
+const { wsCache, CACHE_KEY } = useCache('localStorage');
 
 const userInfo = reactive(wsCache.get(CACHE_KEY.USER) || {});
 const isLogin = computed(() => !!userInfo.accessToken);
@@ -74,25 +74,13 @@ const handleCommand = async (command) => {
   switch (command) {
     case 'signIn':
       {
-        if (isLogin.value) return MessagePlugin.info('您已签到啦~');
+        if (isLogin.value) return MessagePlugin.info('您已经签到啦~ 🎉');
         loading.value = true;
         try {
           const info = await signIn(wxCode.value);
           info.createTime = formatToDateTime(info.createTime);
           wsCache.set(CACHE_KEY.USER, info);
           Object.assign(userInfo, info);
-        } catch (err) {
-          DialogPlugin.alert({
-            width: '70%',
-            header: '系统提示',
-            body: '签到失败，请重新授权登录。',
-            closeBtn: false,
-            closeOnOverlayClick: false,
-            closeOnEscKeydown: false,
-            onConfirm() {
-              handleUnlogin();
-            },
-          });
         } finally {
           loading.value = false;
         }

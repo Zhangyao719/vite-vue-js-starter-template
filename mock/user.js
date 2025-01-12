@@ -9,6 +9,7 @@ export default [
           headimgurl: 'https://tdesign.gtimg.com/site/avatar.jpg',
           nickname: '张三丰',
           currentNum: 1,
+          openid: 'openid',
           createTime: '1970-01-01 00:00:00',
           accessToken: 'accessToken',
           refreshToken: 'refreshToken',

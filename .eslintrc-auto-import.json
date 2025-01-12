@@ -87,6 +87,7 @@
     "useId": true,
     "useModel": true,
     "useTemplateRef": true,
-    "MessagePlugin": true
+    "MessagePlugin": true,
+    "DialogPlugin": true
   }
 }

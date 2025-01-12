@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { handleUnlogin } from '@/utils/authorize';
 import { MessagePlugin } from 'tdesign-vue-next';
 
 // 创建请求实例
@@ -34,6 +35,19 @@ instance.interceptors.response.use(
       case 200:
         // 其他服务器返回成功
         return data;
+      case 401:
+        DialogPlugin.alert({
+          width: '70%',
+          header: '系统提示',
+          body: '身份验证已过期，请重新授权登录~ 🌹',
+          closeBtn: false,
+          closeOnOverlayClick: false,
+          closeOnEscKeydown: false,
+          onConfirm() {
+            handleUnlogin();
+          },
+        });
+        break;
       default:
         // 失败
         if (!config.headers['X-Response-Handler']) {
