@@ -81,11 +81,14 @@ export default [
     response: ({ query }) => {
       return {
         code: 0,
-        data: Array.from({ length: 100 }).map((_, index) => ({
+        data: Array.from({ length: 20 }).map((_, index) => ({
           id: index + 1,
           openid: 'openid' + index,
           nickname: '撒大大撒' + index,
-          headimgurl: 'https://tdesign.gtimg.com/site/avatar.jpg',
+          headimgurl:
+            index % 2 === 0
+              ? 'https://tdesign.gtimg.com/site/avatar.jpg'
+              : 'https://thirdwx.qlogo.cn/mmopen/vi_32/ibGW3wrs6U0cvOQfIKLVJSgCUaJLWvibzia72FNibicVfsiawmicTfHFDPKUe4HgkRAB3AOY3icoLgFDIucU0ibbJxpPky95rAu1iaS2PzOAGia5uLb4zg/132',
         })),
       };
     },
@@ -142,6 +145,28 @@ export default [
               nickname: '我尼玛爱嫂子' + index,
               dept: '康辉啊省点钱阿' + index,
             })),
+      };
+    },
+  },
+  // 获取场内签到人数
+  {
+    url: '/prize-draw-user/getPrizeDrawUserCount',
+    method: 'get',
+    response: ({ query }) => {
+      return {
+        code: 0,
+        data: 100,
+      };
+    },
+  },
+  // 获取场外参与人数
+  {
+    url: '/prize-draw-out-user/getPrizeDrawOutUserCount',
+    method: 'get',
+    response: ({ query }) => {
+      return {
+        code: 0,
+        data: 2000,
       };
     },
   },
