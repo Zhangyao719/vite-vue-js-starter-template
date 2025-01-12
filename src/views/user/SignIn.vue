@@ -7,9 +7,10 @@
       size="1.5rem"
       style="
 
---td-brand-color: #fedc83;
+        --td-brand-color: #fedc83;
 
- background-color: transparent"
+        background-color: transparent;
+      "
     />
     <!-- 用户信息 -->
     <div class="w-full h-1/2 flex-center flex-col">
@@ -102,18 +103,15 @@ const handleCommand = async (command) => {
         if (!isLogin.value) return MessagePlugin.info('您还没有登录哦~');
         loading.value = true;
         try {
-          const record = await getPrizeInfoByOpenId(userInfo.openId);
-          console.log('🚀 ~ record:', record);
-          DialogPlugin.alert({
+          const msg = await getPrizeInfoByOpenId(userInfo.openid);
+          const alertDia = DialogPlugin.alert({
             width: '70%',
             header: '系统提示',
-            body: '签到失败，请重新授权登录。',
+            body: msg,
             closeBtn: false,
             closeOnOverlayClick: false,
             closeOnEscKeydown: false,
-            onConfirm() {
-              handleUnlogin();
-            },
+            onConfirm: () => alertDia.hide(),
           });
         } finally {
           loading.value = false;
