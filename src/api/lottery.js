@@ -1,7 +1,7 @@
 import { get, post } from '@/utils/request';
 import useCache from '@/utils/storage';
 
-const { wsCache, CACHE_KEY } = useCache('localStorage');
+const { wsCache, CACHE_KEY } = useCache();
 
 /**
  * @description 获取所有活动列表

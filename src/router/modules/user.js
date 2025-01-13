@@ -2,7 +2,7 @@ import { setRem } from '@/utils/layout';
 import useCache from '@/utils/storage';
 import { isEmpty } from '@/utils/is';
 
-const { wsCache, CACHE_KEY } = useCache('localStorage');
+const { wsCache, CACHE_KEY } = useCache();
 
 export default [
   {

@@ -16,13 +16,13 @@
     <div class="w-full h-1/2 flex-center flex-col">
       <t-avatar :image="userInfo.headimgurl" size="3.5rem" />
       <div class="text-#FEDC83 text-center">
-        <p class="text-base font-bold mt-4">{{ userInfo.nickname || '用户昵称' }}</p>
+        <p class="text-base font-bold mt-4">{{ userInfo.nickname }}</p>
         <p class="mt-3">
           您是第
-          <span class="text-white text-sm">{{ userInfo.currentNum || 0 }}</span>
+          <span class="text-white text-sm">{{ userInfo.currentNum }}</span>
           位签到嘉宾
         </p>
-        <p class="mt-3">{{ userInfo.createTime || '1970-01-01 00:00:00' }}</p>
+        <p class="mt-3">{{ userInfo.createTime }}</p>
       </div>
     </div>
 
@@ -50,7 +50,7 @@ import { onBeforeMount, ref, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { DialogPlugin, MessagePlugin } from 'tdesign-vue-next';
 import { IconFont } from 'tdesign-icons-vue-next';
-import { authorize, handleUnlogin } from '@/utils/authorize';
+import { authorize } from '@/utils/authorize';
 import { signIn, getPrizeInfoByOpenId } from '@/api';
 import useCache from '@/utils/storage';
 import { formatToDateTime } from '@/utils/date';
@@ -62,9 +62,14 @@ defineOptions({
 
 const route = useRoute();
 
-const { wsCache, CACHE_KEY } = useCache('localStorage');
+const { wsCache, CACHE_KEY } = useCache();
 
-const userInfo = reactive(wsCache.get(CACHE_KEY.USER) || {});
+const userInfo = reactive({
+  headimgurl: 'https://tdesign.gtimg.com/site/avatar.jpg',
+  nickname: '用户昵称',
+  currentNum: 0,
+  createTime: '1970-01-01 00:00:00',
+});
 const isLogin = computed(() => !!userInfo.accessToken);
 
 //#region 操作栏
@@ -88,7 +93,7 @@ const handleCommand = async (command) => {
       break;
     case 'winRecord':
       {
-        if (!isLogin.value) return MessagePlugin.info('您还没有登录哦~');
+        if (!isLogin.value) return MessagePlugin.info('您还没有登录哦~ 🤪');
         loading.value = true;
         try {
           const msg = await getPrizeInfoByOpenId(userInfo.openid);
@@ -113,11 +118,13 @@ const handleCommand = async (command) => {
 //#endregion
 
 onBeforeMount(() => {
-  if (isLogin.value) return;
-
   const { code } = route.query;
   if (code) {
     wxCode.value = code;
+    // 自动为用户签到一次
+    handleCommand('signIn').then(() => {
+      MessagePlugin.info('自动签到成功~ 🎉');
+    });
   } else {
     DialogPlugin.confirm({
       width: '70%',

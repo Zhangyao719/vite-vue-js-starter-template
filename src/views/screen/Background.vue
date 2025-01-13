@@ -127,7 +127,7 @@ defineOptions({
 
 const router = useRouter();
 const lotteryStore = useLotteryStore();
-const { wsCache, CACHE_KEY } = useCache('localStorage');
+const { wsCache, CACHE_KEY } = useCache();
 
 // #region 音频（背景音乐、抽奖音乐等）
 const { musicRef, musicState, classMusic, musicConfig, selectMusic, toggleMusic } = useMusic();
