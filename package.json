@@ -1,22 +1,17 @@
 {
-  "name": "vite-vue-js-starter-template",
-  "description": "Vue3 JavaScript Starter Project For Vite.",
+  "name": "hk-lottery",
+  "description": "基于社区模板打造的抽奖项目",
   "version": "0.0.0",
   "type": "module",
   "packageManager": "pnpm@8.10.5",
   "license": "MIT",
   "author": {
-    "name": "ElanYoung",
-    "email": "william@starimmortal.com",
-    "url": "https://doc.starimmortal.com"
+    "name": "Zamir Zhang",
+    "email": "1258858403@qq.com"
   },
-  "homepage": "https://elanyoung.github.io/vite-vue-js-starter-template",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ElanYoung/vite-vue-js-starter-template.git"
-  },
-  "bugs": {
-    "url": "https://github.com/ElanYoung/vite-vue-js-starter-template/issues"
+    "url": "https://github.com/Zhangyao719/vite-vue-js-starter-template.git"
   },
   "scripts": {
     "dev": "vite",
